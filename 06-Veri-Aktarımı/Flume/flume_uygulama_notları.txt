@@ -1,0 +1,109 @@
+1. 
+	https://github.com/veribilimiokulu/buyukveri-egitimi/blob/master/06-Veri-Aktar%C4%B1m%C4%B1/Flume/flumelogs.conf
+	adresinde  Raw'e tıkla, adres bardan adresi kopyala ve curl ile indir. Raw'e tıklamadan indirirsen html içerik iner.
+	
+	[maria_dev@sandbox-hdp ~]$ curl -O https://raw.githubusercontent.com/veribilimiokulu/buyukveri-egitimi/master/06-Veri-Aktar%C4%B1m%C4%B1/Flume/flumelogs.conf
+
+	
+	Kontrol:
+		
+		[maria_dev@sandbox-hdp ~]$ cat flumelogs.conf
+		# flumelogs.conf: A single-node Flume configuration
+
+		# Name the components on this agent
+		a1.sources = r1
+		a1.sinks = k1
+		a1.channels = c1
+
+		# Describe/configure the source
+		a1.sources.r1.type = spooldir
+		a1.sources.r1.spoolDir = /home/maria_dev/spool
+		a1.sources.r1.fileHeader = true
+		a1.sources.r1.interceptors = timestampInterceptor
+		a1.sources.r1.interceptors.timestampInterceptor.type = timestamp
+
+		# Describe the sink
+		a1.sinks.k1.type = hdfs
+		a1.sinks.k1.hdfs.path = /user/maria_dev/flume/%y-%m-%d/%H%M/%S
+		a1.sinks.k1.hdfs.filePrefix = events-
+		a1.sinks.k1.hdfs.round = true
+		a1.sinks.k1.hdfs.roundValue = 10
+		a1.sinks.k1.hdfs.roundUnit = minute
+
+		# Use a channel which buffers events in memory
+		a1.channels.c1.type = memory
+		a1.channels.c1.capacity = 1000
+		a1.channels.c1.transactionCapacity = 100
+
+		# Bind the source and sink to the channel
+		a1.sources.r1.channels = c1
+		a1.sinks.k1.channel = c1
+
+	
+
+2. mkdir -p /home/maria_dev/spool
+	komutu ile dizin oluştur.
+	
+	Bu dizin içine atılan dosya, log vb. şeylerin izlenip okunacağı kaynak dizindir.
+	
+2. hdfs dosya sisteminde 
+		[maria_dev@sandbox-hdp ~]$ hdfs dfs -mkdir /user/maria_dev/flume
+		
+		Kontrol:
+		----------
+		[maria_dev@sandbox-hdp ~]$ hdfs dfs -ls /user/maria_dev
+		Found 1 items
+		drwxr-xr-x   - maria_dev hdfs          0 2019-04-21 16:27 /user/maria_dev/flume
+ 
+
+3. flume-server ile akışı başlatma
+	[maria_dev@sandbox-hdp ~]$ cd /usr/hdp/current/flume-server/
+	flume-server diznine geç
+	
+
+	[maria_dev@sandbox-hdp flume-server]$ bin/flume-ng agent --conf conf --conf-file /home/maria_dev/flumelogs.conf --name a1 -Dflume.root.logger=INFO,console
+	komutunu çalıştır.
+	
+4. farklı bir teminalden 
+		/home/maria_dev/spool
+		dizinine 
+		curl -O https://raw.githubusercontent.com/veribilimiokulu/buyukveri-egitimi/master/06-Veri-Aktar%C4%B1m%C4%B1/Flume/apache_erisim_loglari.txt
+		
+		ile küçük log dosyasını indir.
+		
+5. [maria_dev@sandbox-hdp ~]$ cp apache_erisim_loglari.txt spool/
+
+ile monitör edilen dizine log dosyasını kopyala.
+daha sonra diğer terminalde flum'un davranışlarını izle.
+
+6. Kaynak dizine göz at ve dosyadaki değişikliği gözle
+	[maria_dev@sandbox-hdp ~]$ ls -l spool/
+	total 16
+	-rw-rw-r-- 1 maria_dev maria_dev 4826 Apr 21 17:23 apache_erisim_loglari.txt.COMPLETED
+
+	işlenen dosyanın sonuna.COMPLETED eklendiğini görüyoruz.
+
+7. HDFS hedef dizninden aktarımın olup olmadığını kontrol et. Hedef dizin /user/maria_dev/flume idi.
+	[maria_dev@sandbox-hdp ~]$ hdfs dfs -ls /user/maria_dev/flume
+	Found 1 items
+	drwxr-xr-x   - maria_dev hdfs          0 2019-04-21 17:23 /user/maria_dev/flume/19-04-21
+
+		Daha detaylı görünüm için 
+		[maria_dev@sandbox-hdp ~]$ hdfs dfs -ls /user/maria_dev/flume/19-04-21/1720/00
+		Found 10 items
+		-rw-r--r--   1 maria_dev hdfs       1331 2019-04-21 17:23 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427674
+		-rw-r--r--   1 maria_dev hdfs       1236 2019-04-21 17:23 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427675
+		-rw-r--r--   1 maria_dev hdfs       1279 2019-04-21 17:23 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427676
+		-rw-r--r--   1 maria_dev hdfs       1427 2019-04-21 17:23 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427677
+		-rw-r--r--   1 maria_dev hdfs       1339 2019-04-21 17:24 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427678
+		-rw-r--r--   1 maria_dev hdfs       1327 2019-04-21 17:24 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427679
+		-rw-r--r--   1 maria_dev hdfs       1255 2019-04-21 17:24 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427680
+		-rw-r--r--   1 maria_dev hdfs       1377 2019-04-21 17:24 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427681
+		-rw-r--r--   1 maria_dev hdfs       1286 2019-04-21 17:24 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427682
+		-rw-r--r--   1 maria_dev hdfs        221 2019-04-21 17:24 /user/maria_dev/flume/19-04-21/1720/00/events-.1555867427683
+
+8. Aynı kontrolü Ambari Files View üzerinden de yap.
+	Görmeye çalıştıında bozuk karakterler karşına çıkabilir. Bu hatadan değil. Seq file formatında saklandığındandır.Bu format 
+	eko sistemdeki diğer bileşenler tarafından daha kolay okunup işlenebilir.
+
+9. Flume-Server'ın çalıştığı terminali Ctrl+C ile kapatın. 
