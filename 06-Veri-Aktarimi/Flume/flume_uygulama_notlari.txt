@@ -1,8 +1,8 @@
 1. 
-	https://github.com/veribilimiokulu/buyukveri-egitimi/blob/master/06-Veri-Aktar%C4%B1m%C4%B1/Flume/flumelogs.conf
-	adresinde  Raw'e tıkla, adres bardan adresi kopyala ve curl ile indir. Raw'e tıklamadan indirirsen html içerik iner.
+	https://github.com/veribilimiokulu/udemy-hadoop-buyukveri-egitimi/blob/master/06-Veri-Aktarimi/Flume/flumelogs.conf
+	adresine git.  Raw'e tıkla, adres bardan adresi kopyala ve curl ile indir. Raw'e tıklamadan indirirsen html içerik iner.
 	
-	[maria_dev@sandbox-hdp ~]$ curl -O https://raw.githubusercontent.com/veribilimiokulu/buyukveri-egitimi/master/06-Veri-Aktar%C4%B1m%C4%B1/Flume/flumelogs.conf
+	[maria_dev@sandbox-hdp ~]$ curl -O https://raw.githubusercontent.com/veribilimiokulu/udemy-hadoop-buyukveri-egitimi/master/06-Veri-Aktarimi/Flume/flumelogs.conf
 
 	
 	Kontrol:
@@ -67,7 +67,7 @@
 4. farklı bir teminalden 
 		/home/maria_dev/spool
 		dizinine 
-		curl -O https://raw.githubusercontent.com/veribilimiokulu/buyukveri-egitimi/master/06-Veri-Aktar%C4%B1m%C4%B1/Flume/apache_erisim_loglari.txt
+		curl -O https://raw.githubusercontent.com/veribilimiokulu/udemy-hadoop-buyukveri-egitimi/master/06-Veri-Aktarimi/Flume/apache_erisim_loglari.txt
 		
 		ile küçük log dosyasını indir.
 		
