@@ -1,0 +1,79 @@
+1. Ambari Admin -> Stack and Verisions 
+	üzerinden HDFS ve YARN versiyonlarına bak.
+	
+	HDP 2.6.4 için Hadoop 2.7.3 versiyonu kullanılıyor.
+	
+	Apache Flink’i Apache Hadoop ile birlikte kullanmayı planlıyorsanız 
+	(YARN’da Flink’i çalıştırın, HDFS’ye bağlanın, HBase’e bağlanın veya 
+	Hadoop tabanlı bir dosya sistemi konektörü kullanın), 
+	ardından uygun Hadoop sürümünü paketleyen indirmeyi seçin sürümünüzle eşleşen ve 
+	Flink'in lib klasörüne yerleştiren -bundled Hadoop veya HADOOP_CLASSPATH cihazınızı dışa aktarın.
+
+2. ssh ile maria_dev kullanıcısı ile bağlan 
+
+
+
+Apache Flink'i 
+https://www.apache.org/dyn/closer.lua/flink/flink-1.7.2/flink-1.7.2-bin-hadoop27-scala_2.11.tgz
+bağlantısından indirin.
+
+3. [maria_dev@sandbox-hdp ~]$ tar xzf flink-1.7.2-bin-hadoop27-scala_2.11.tgz
+
+4. [maria_dev@sandbox-hdp ~]$ cd flink-1.7.2
+
+5. [maria_dev@sandbox-hdp flink-1.7.2]$ cd conf/
+
+
+6. [maria_dev@sandbox-hdp conf]$ vi flink-conf.yaml
+
+	içinden 
+	res.port: 8082 yap (eski değer 8081)
+	
+7. [maria_dev@sandbox-hdp conf]$ cd ..
+
+8. [maria_dev@sandbox-hdp flink-1.7.2]$ ./bin/start-cluster.sh
+
+	Çıktı:
+	Setting HADOOP_CONF_DIR=/etc/hadoop/conf because no HADOOP_CONF_DIR was set.
+	Starting cluster.
+	Setting HADOOP_CONF_DIR=/etc/hadoop/conf because no HADOOP_CONF_DIR was set.
+	Setting HADOOP_CONF_DIR=/etc/hadoop/conf because no HADOOP_CONF_DIR was set.
+	Starting standalonesession daemon on host sandbox-hdp.hortonworks.com.
+	Setting HADOOP_CONF_DIR=/etc/hadoop/conf because no HADOOP_CONF_DIR was set.
+	Setting HADOOP_CONF_DIR=/etc/hadoop/conf because no HADOOP_CONF_DIR was set.
+	Starting taskexecutor daemon on host sandbox-hdp.hortonworks.com.
+
+9. http://sandbox-hdp.hortonworks.com:8082/#/overview
+	adresinden Flink web arayüzüne ulaşın.
+	
+	
+10. nc -l 9000 
+		komutu ile netcat'i çalıştırın.
+		
+11. başka bir terminalden ssh ile tekrar sandbox'a bağlaın
+
+12. hadoop classpath'ı export etmek
+[maria_dev@sandbox-hdp ~]$ hadoop classpath
+/usr/hdp/2.6.4.0-91/hadoop/conf:/usr/hdp/2.6.4.0-91/hadoop/lib/*:/usr/hdp/2.6.4.0-91/hadoop/.//*:/usr/hdp/2.6.4.0-91/hadoop-hdfs/./:/usr/hdp/2.6.4.0-91/hadoop-hdfs/lib/*:/usr/hdp/2.6.4.0-91/hadoop-hdfs/.//*:/usr/hdp/2.6.4.0-91/hadoop-yarn/lib/*:/usr/hdp/2.6.4.0-91/hadoop-yarn/.//*:/usr/hdp/2.6.4.0-91/hadoop-mapreduce/lib/*:/usr/hdp/2.6.4.0-91/hadoop-mapreduce/.//*::jdbc-mysql.jar:mysql-connector-java-5.1.17.jar:mysql-connector-java-5.1.37.jar:mysql-connector-java.jar:/usr/hdp/2.6.4.0-91/tez/*:/usr/hdp/2.6.4.0-91/tez/lib/*:/usr/hdp/2.6.4.0-91/tez/conf
+[maria_dev@sandbox-hdp ~]$ export HADOOP_CLASSPATH="/usr/hdp/2.6.4.0-91/hadoop/conf:/usr/hdp/2.6.4.0-91/hadoop/lib/*:/usr/hdp/2.6.4.0-91/hadoop/.//*:/usr/hdp/2.6.4.0-91/hadoop-hdfs/./:/usr/hdp/2.6.4.0-91/hadoop-hdfs/lib/*:/usr/hdp/2.6.4.0-91/hadoop-hdfs/.//*:/usr/hdp/2.6.4.0-91/hadoop-yarn/lib/*:/usr/hdp/2.6.4.0-91/hadoop-yarn/.//*:/usr/hdp/2.6.4.0-91/hadoop-mapreduce/lib/*:/usr/hdp/2.6.4.0-91/hadoop-mapreduce/.//*::jdbc-mysql.jar:mysql-connector-java-5.1.17.jar:mysql-connector-java-5.1.37.jar:mysql-connector-java.jar:/usr/hdp/2.6.4.0-91/tez/*:/usr/hdp/2.6.4.0-91/tez/lib/*:/usr/hdp/2.6.4.0-91/tez/conf"
+
+LOG4J hatası verdiğim için yukarıdaki export tan /usr/hdp/2.6.4.0-91/hadoop/lib/*: kısmını silip tekrar export et.
+	
+13. [maria_dev@sandbox-hdp ~]$ flink-1.7.2/bin/flink run flink-1.7.2/examples/streaming/SocketWindowWordCount.jar --port 9000	
+	
+	Setting HADOOP_CONF_DIR=/etc/hadoop/conf because no HADOOP_CONF_DIR was set.
+	Starting execution of program
+
+14. web arayüze git ve Running Jobs içinde gör. 	
+	
+15. netcat çalışan terminalden birşeyler yaz
+
+16. /home/maria_dev/flink-1.7.2/log/flink-maria_dev-taskexecutor-0-sandbox-hdp.hortonworks.com.out
+		dosyasında yazdığın kelimelerin sayılmış hallerini gör.
+		
+17. Flink Streaming'i kapatma.
+
+netcat çalışan terminali Ctrl+C ile kapattığımızda bağlantı kesildiği için otomatik olarak Flink Streming uygulaması da sonlanacaktır.
+
+
+	

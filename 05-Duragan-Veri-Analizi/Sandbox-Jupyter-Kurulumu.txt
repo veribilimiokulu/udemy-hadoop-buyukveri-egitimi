@@ -1,0 +1,92 @@
+
+
+//////////////////  HDP SANDBOX JUPYTER KURULUMU  /////////////////////////////////////
+
+
+PYTHON 3.6 KURULU DEĞİLSE
+		
+		yum -y install yum-utils
+		 
+		yum -y groupinstall development
+		
+		yum -y install python36u-pip
+		
+		pip3.6 -V
+		
+		Beklenen çıktı:
+		pip 9.0.1 from /usr/lib/python3.6/site-packages (python 3.6)
+
+PYTHON KURULUMU SONRASI ZEPPELIN VE AMBARI'DEN YAPILACAK AYARLAR		
+
+Zeppelin Spark2 Interpreter ayarlarından
+
+python yerine python3.6 yazıyoruz.
+
+Ambari arayüzden -> Spark2 -> Configs -> Advanced spark2-env -> content
+en alt satırdan sonra aşağıdaki iki satırı ekliyoruz.
+PYSPARK_PYTHON=python3.6
+PYSPARK_DRIVER_PYTHON=python3.6
+
+Kaydedip Ambari'den gerekli servisleri restart edelim.
+
+JUPYTER KURULUMU
+
+pip3.6 install --upgrade pip
+
+pip3.6 install jupyter
+
+pip3.6 install findspark
+
+JUPYTER KURULUM SONRASI HAZIRLIKLAR
+
+su hdfs 
+cd /home/hdfs
+mkdir notebook
+
+
+/home/hdfs dizininden 
+[hdfs@sandbox-hdp /]$  jupyter notebook --ip sandbox-hdp.hortonworks.com --port 8889
+ile çalıştıralım
+
+16. 
+http://sandbox-hdp.hortonworks.com:8889/?token=85adadd51bf1971c1f050fbde933b268a3d307aec9135c75
+adresinden erişelim. Sizin linkiniz farklı olabilir. Token'dan dolayı
+
+Aşağıdaki kodları Jupyter'da çalıştıralım
+
+import findspark
+findspark.init("/usr/hdp/current/spark2-client/")
+
+from pyspark.sql import functions as F
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+.appName("Jupyter_Spark_Giris") \
+.master("yarn") \
+.getOrCreate()
+
+# Aşağıdaki adreste bir veri olmalıdır.
+df = spark.read.format("csv") \
+.option("header","True") \
+.option("inferSchema","True") \
+.load("hdfs:///user/admin/simple_data.csv")
+
+df.toPandas().head()
+
+
+Okunan dataframe görülmelidir.
+
+
+İtiyaç halinde aşağıdaki diğer sık kullanılan diğer python paketleri komut satırından  yüklenebilir.
+pip3.6 install pandas
+	epey bir dependency kuracaktır
+
+pip3.6 install matplotlib
+
+pip3.6 install sklearn
+
+pip3.6 install seaborn
+
+pip3.6 install jinja2
+
+pip3.6 install pyzmq
