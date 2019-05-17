@@ -4,8 +4,8 @@
 	HDP 2.6.4 için Hadoop 2.7.3 versiyonu kullanılıyor.
 	
 	Apache Flink’i Apache Hadoop ile birlikte kullanmayı planlıyorsanız 
-	(YARN’da Flink’i çalıştırın, HDFS’ye bağlanın, HBase’e bağlanın veya 
-	Hadoop tabanlı bir dosya sistemi konektörü kullanın), 
+	(YARN’da Flink’i çalıştırma, HDFS’e bağlanma, HBase’e bağlanma veya 
+	Hadoop tabanlı bir dosya sistemi konektörü kullanma), 
 	ardından uygun Hadoop sürümünü paketleyen indirmeyi seçin sürümünüzle eşleşen ve 
 	Flink'in lib klasörüne yerleştiren -bundled Hadoop veya HADOOP_CLASSPATH cihazınızı dışa aktarın.
 
@@ -50,7 +50,7 @@ bağlantısından indirin.
 10. nc -l 9000 
 		komutu ile netcat'i çalıştırın.
 		
-11. başka bir terminalden ssh ile tekrar sandbox'a bağlaın
+11. başka bir terminalden ssh ile tekrar sandbox'a bağlanın
 
 12. hadoop classpath'ı export etmek
 [maria_dev@sandbox-hdp ~]$ hadoop classpath

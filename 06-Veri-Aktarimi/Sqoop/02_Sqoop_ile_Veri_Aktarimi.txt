@@ -1,0 +1,129 @@
+Bu derste 
+1. mysql veri tabanında bir veri tabanı ve tablo yaratma 
+	1.1. mysql veri tabanına shell ile bağlanma:
+	[root@sandbox-hdp ~]# mysql -u root -p
+		Şifre: hadoop
+		
+	1.2. yeni bir veri tabanı yaratma:
+	[root@sandbox-hdp ~]# create database azhadoop;
+	
+	1.3. Mevcut veri tabanlarını görüntüleme:
+	mysql> show databases;
+		+--------------------+
+		| Database           |
+		+--------------------+
+		| information_schema |
+		| azhadoop           |
+		| hive               |
+		| mysql              |
+		| performance_schema |
+		| ranger             |
+		+--------------------+
+		6 rows in set (0.04 sec)
+		
+	1.4. azhadoop vertabanına yetki
+mysql> GRANT ALL PRIVILEGES ON azhadoop.* TO 'root'@'localhost';
+mysql> GRANT ALL PRIVILEGES ON azhadoop.* TO 'root'@'sandbox-hdp.hortonworks.com';
+
+	1.5. Kullanılacak veri tabanını seçme:
+	mysql> use azhadoop;
+	Database changed
+	
+	1.6. Veri tabanındaki tabloları listeleme:
+	mysql> show tables;
+	Empty set (0.00 sec)
+	
+	boş
+	
+	
+2. iris.csv doyasının içeriği bu tabloya aktarma
+
+	2.1. iris veri setine uygun tablo yaratma 
+	
+	mysql> create table iris_mysql(SepalLengthCm double, SepalWidthCm double, PetalLengthCm double, PetalWidthCm double, Species VARCHAR(20));
+
+		mysql çıkış.
+		\q:
+	2.1. iris.csv dosyasını /root dizinine taşıma ve başlık satırını silme
+		[root@sandbox-hdp ~]# wget https://raw.githubusercontent.com/erkansirin78/hadoop-spark-for-developers/master/Datasets/iris.csv
+		
+	2.2. 
+	[root@sandbox-hdp ~]# vi iris.csv
+		ile dosyanın başlık satırını sil 
+		mysql'e tekrar bağlan  
+
+		mysql> use azhadoop;
+
+		mysql>
+		LOAD DATA LOCAL INFILE '/root/iris.csv' INTO TABLE iris_mysql
+		FIELDS TERMINATED BY ',' 
+		ENCLOSED BY '"' 
+		LINES TERMINATED BY '\n'
+		(SepalLengthCm,SepalWidthCm,PetalLengthCm,PetalWidthCm,Species);
+
+mysql çıkış.
+ \q:
+
+
+3. sqoop eval komutu
+
+[root@sandbox-hdp ~]# sqoop eval --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
+--username root --password hadoop --query "select * from iris_mysql limit 5"
+
+Bu komutun sonunda ekrana sorgu sonucu gelmelidir.
+
+5. Ambari'den Atlas servisini silelim lib ler çakışıyor. 
+Çünkü denemelerde alınan hatalardan Atlas hook sürekli Sqoop'un çalışmasını engellediği görüldü.
+
+6. sqoop import ile mysql'den hdfs'e veri aktarma 
+	6.1. import edilecek dizini hdfs'te yaratalım:
+		[maria_dev@sandbox-hdp ~]$ hdfs dfs -mkdir /user/maria_dev/sqoop_import
+
+		Sqoop import'u çalştıralım:
+
+[maria_dev@sandbox-hdp ~]$ sqoop import --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
+--driver com.mysql.jdbc.Driver \
+--username root --password hadoop \
+--table iris_mysql --m 1 --target-dir /user/maria_dev/sqoop_import/iris
+
+Hedef dizinde kontrol yapalım:
+Ambari FilesView ile /user/maria_dev/sqoop_import/iris
+diznini kontrol edelim ve iris verisetini görelim.
+part-m-00000
+
+Yukarıda --m 1 parametresini mapping sayısı çin kullanıyoruz. Şayet tablomuzda artan sıralı bir anahtar olsaydı
+bunu daha fazla parça ile yapabilirdik. Ancak olmadığı için mecbur --m 1 yapıyoruz.
+
+
+
+7. sqoop import ile mysql'den Hive'a veri aktarma ön ayarlar:
+
+mapreduce.job.ubertask.enable = true
+mapreduce.job.ubertask.maxmaps = 1
+mapreduce.job.ubertask.maxreduces = 1
+mapreduce.job.ubertask.maxbytes = 134217728
+
+mapreduce.job.ubertask.maxbytes değeri HDFS ayarlarından alındı dfs.block.size=134217728
+
+
+8. Aktarım:
+Tablo mevcut değilse:
+target dir silme  hdfs dfs -rm -R -skipTrash /tmp/hive_temp
+
+sqoop import --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
+--driver com.mysql.jdbc.Driver \
+--username root --password hadoop \
+--query "select * from iris_mysql WHERE \$CONDITIONS" \
+--m 1 --hive-import --create-hive-table \
+--hive-table azhadoop.iris_hive --target-dir /tmp/hive_temp
+
+
+Tablo mevcut ve üzerine yazılacaksa:
+target dir silme  hdfs dfs -rm -R -skipTrash /tmp/hive_temp
+sqoop import --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
+--driver com.mysql.jdbc.Driver \
+--username root --password hadoop \
+--query "select * from iris_mysql WHERE \$CONDITIONS" \
+--m 1 --hive-import --hive-overwrite \
+--hive-table azhadoop.iris_hive --target-dir /tmp/hive_temp
+

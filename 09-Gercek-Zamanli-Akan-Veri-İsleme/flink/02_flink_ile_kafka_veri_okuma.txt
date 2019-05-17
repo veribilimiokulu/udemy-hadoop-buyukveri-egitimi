@@ -1,0 +1,98 @@
+//////////////// FLÝNK ÝLE KAFKA'DAN VERÝ OKUMA  ////////////////////////
+1. Intellij ile projeyi aç veya yarat.
+
+
+2. https://www.veribilimi.co/windows-10-uzerine-kafka-kurmak/ 
+adresinden Kafka kurulur ve çalýþtýrýlýr ve deneme topic oluþturulur.
+(Yazýda örnekleri var)
+
+3. kafka-console-producer.bat --broker-list localhost:9092 --topic deneme
+	komutu ile producer konsolu açtým.
+
+4. pom.xml içine
+	
+	<properties>
+        <flink-version>1.7.2</flink-version>
+    </properties>
+<dependencies>
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-streaming-java_2.11</artifactId>
+        <version>${flink-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-core</artifactId>
+        <version>${flink-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-scala_2.11</artifactId>
+        <version>${flink-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-streaming-scala_2.11</artifactId>
+        <version>${flink-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.flink</groupId>
+        <artifactId>flink-connector-kafka-0.10_2.11</artifactId>
+        <version>${flink-version}</version>
+    </dependency>
+</dependencies>
+    <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.4.2</version>
+            </plugin>
+        </plugins>
+    </build>
+	
+
+5. ReadFromKafka Object'i yaratýlýr.
+	içine þu kodlarý yazýlýr:
+	
+package streaming
+
+import java.util.Properties
+import org.apache.flink.streaming.api.scala._
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010
+import org.apache.flink.streaming.util.serialization.SimpleStringSchema
+
+
+object ReadFromKafka {
+  def main(args: Array[String]): Unit = {
+    val env = StreamExecutionEnvironment.getExecutionEnvironment
+    val properties = new Properties()
+    properties.setProperty("bootstrap.servers", "localhost:9092")
+    properties.setProperty("zookeeper.connect", "localhost:2181")
+    properties.setProperty("group.id", "test")
+
+    val stream = env
+      .addSource(new FlinkKafkaConsumer010[String]("deneme", new SimpleStringSchema(), properties))
+
+    stream.print()
+
+    env.execute("Flink Kafka Example")
+
+  }
+}
+
+6. Kod çalýþtýrýlýr. 
+
+7. Kafka producer konsoldan mesaj yazmaya baþlanýr.
+
+8. Sonuçlar Ýntellij konsolundan gözlenir.
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+5> selam
+5> flink
+5> merhaba Mert
+5> selam flink
+////////////////////////////////////////////////////////////////
