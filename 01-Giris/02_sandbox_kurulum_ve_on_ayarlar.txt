@@ -1,0 +1,109 @@
+1. VirtualBox'ı indir.
+
+2. HDP 2.6.4 Sandbox kopyala
+
+3. VirtualBox kur 
+	Mac'te bunun için güvenlik ayarlarından üçüncü parti yazılım kurulumuna izin ver. 
+
+4. Sandbox'ı VirtualBox üzerinde aç (mac için küçük boyutlu dosyaya tıklayarak aç)
+	
+5. Git ile eğitim için bir dizin oluştur:
+	Komut: mkdir egitim_icerigi
+	
+	Komut: cd egitim_icerigi
+	
+	içine girip
+	
+	Komut: git init 
+	ile bu dizinde git'i başlat.
+	
+	İstersek bu dizin içinde 
+	ls -al ile 
+	.git klasörünü ve içeriğini görebiliriz (genel git bilgisi)
+	
+6. Kursun github reposunu ekleme
+	Komut: git remote add spark https://github.com/erkansirin78/hadoop-spark-for-developers.git
+
+7. Github'daki en güncel içeriği çalışma diznine çekme
+	Komut: git pull spark master
+
+
+8. Sandbox temel ayarlar 
+	https://hortonworks.com/tutorial/learning-the-ropes-of-the-hortonworks-sandbox/
+	
+	8.1. hosts dosyasına isim ve ip ekleme
+	-----------------------------------------
+	
+	Mac için terminalden 
+	Komut: echo '127.0.0.1 sandbox-hdp.hortonworks.com sandbox-hdf.hortonworks.com' | sudo tee -a /private/etc/hosts
+	
+	İşlemin kontrolü:terminalden
+	Komut: cat /private/etc/hosts
+	
+	komutundan sonra yukarıdaki satırın hosts dosyasına eklendiğini görmeliyiz.
+	
+	Diğer kontrol 
+	terminalden 
+	ping sandbox-hdp.hortonworks.com 
+	
+	ping atmalıdır.
+	
+	Ctrl+c ile işlemi durdur.
+	
+	
+	Windows users:
+
+	Run Notepad as administrator.
+	Open hosts file located in: c:\Windows\System32\drivers\etc\hosts
+	Add {IP-Address} localhost sandbox-hdp.hortonworks.com sandbox-hdf.hortonworks.com
+	Save the file
+	
+	8.2. Terminalden Sandbox'a erişim
+	------------------------------------
+	Login Credentilas linkine tıkla
+	https://hortonworks.com/tutorial/learning-the-ropes-of-the-hortonworks-sandbox/#login-credentials
+	Burada kullanıcı ve şifreler var.
+	
+	Mac için:
+	Terminalden root kullanıcısı ile Sandbox'a bağlanma(Mac):
+	 ssh -v root@sandbox-hdp.hortonworks.com -p 2222
+	 
+	Windows için gitbash veya putty üzerinden:
+	ssh root@sandbox-hdp.hortonworks.com -p 2222
+	 
+	İlk girişte kullanılacak şifre: hadoop 
+	daha sonra değiştirmeye zorlayacaktır.
+	
+	8.3. Ambari admin kullanıcısı şifresini değiştirme: 
+	----------------------------------------------------
+	root ile Sandbox'a bağlandıktan sonra:
+	ambari-admin-password-reset
+	
+	yeni şifre girmemizi isteyecektir.
+	Ankara06
+	
+	Yeni şifre girdikten sonra Ambari yeniden başlar
+	
+	Sonra browser 
+	http://sandbox-hdp.hortonworks.com:8080
+	
+	Kullanıcı: admin 
+	
+	Şifre: az önce belirlediğimiz şifre
+	
+	
+	8.4. Alternatif terminal bağlantısı:
+	----------------------------------------
+	ssh ile bağlantı sorunu oldu alternatif yöntem
+	
+	browser
+	http://sandbox-hdp.hortonworks.com:4200/
+	yazdık ve web terminale ulaştık.
+	
+	root ve hadoop ile giriş yapıyoruz.
+	
+	Şifre değiştirmek için yeni password istediğinde yeni passwordu giriyoruz
+	
+	
+	
+	

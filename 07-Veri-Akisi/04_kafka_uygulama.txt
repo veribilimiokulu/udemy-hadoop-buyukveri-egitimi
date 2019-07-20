@@ -1,0 +1,39 @@
+1. Ambari üzerinden Kafka'nın çalışır olduğunu kontrol edin.
+
+2. İki adet terminal açın 
+
+3. Terminal-1 Producer Terminali, Terminal-2 Consumer Terminali olsun
+
+4. Producer Terminalinde 
+	
+	4.1. [root@sandbox-hdp ~]# cd /usr/hdp/current/kafka-broker/bin/
+			diznine geçin.
+			
+	4.2. ./kafka-topic.sh --create --zookeeper sandbox-hdp.hortonworks.com:2181 --replication-factor 1 --partitions 1 --topic deneme
+		komutu ile deneme adında bir topic oluşturuyoruz.
+		
+		./kafka-topics.sh --list --zookeeper sandbox-hdp.hortonworks.com:2181
+		
+		komutu ile mevcut topic'leri listeliyoruz.
+		Beklenen çıktı:
+			ATLAS_ENTITIES
+			ATLAS_HOOK
+			__consumer_offsets
+			deneme
+		
+		./kafka-console-producer.sh --broker-list sandbox-hdp.hortonworks.com:6667 --topic deneme
+		
+		komutu bize bir kafka producer imkanı sunar. Buradan yazılan mesajlar artık kafka deneme topiğine gidecektir.
+		
+		Merhaba selam tarzında birşeyler yazalım
+		
+5. Consumer Terminalinde
+
+	5.1. [root@sandbox-hdp ~]# cd /usr/hdp/current/kafka-broker/bin/
+			diznine geçin.
+	
+	5.2. ./kafka-console-consumer.sh --bootstrap-server sandbox-hdp.hortonworks.com:6667 --topic deneme --from-beginning
+	
+		komutu ile az önce producer ile deneme topiğine yazdığımız mesajarı okuyacağız.
+		
+	

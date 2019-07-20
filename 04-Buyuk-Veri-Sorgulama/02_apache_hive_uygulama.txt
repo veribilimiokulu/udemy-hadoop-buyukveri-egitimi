@@ -1,0 +1,67 @@
+﻿1. Ambari Hive2 View üzerinden Uplad Table ile adult veri seti Hive'a tablo olarak yüklenir ve örnek sorgular çalıştırılır.
+
+
+2. Sorgular esnasında YARN Resource Manager arayüzündeki değişiklikler gözlemlenir.
+
+3. Hive veri tabanı yaratma
+
+	3.1. CREATE DATABASE azhadoop;
+	
+	3.2. SHOW DATABASES;
+	
+	ile yeni yaratılan azhadoop veri tabanı listede görülür.
+	
+4. DBeaver Hive Bağlantısı ve Hive üzerinde sorgu çalıştırma
+
+
+5. Hive ve Impala 
+	Impala Hive'ın Cloudera'daki karşılığı
+	Impala'nın bir avantajı BI tarzındaki sorguları
+	Ayrıca Impala sorgu performansı olarak da daha hızlı
+	Ancak Impala Cloudera ile sınırlı bir araç Hive daha geniş ve açık bir proje
+	
+6. Beeline ile Hive komut satırına bağlanma:
+[root@sandbox-hdp ~]# beeline -u jdbc:hive2://localhost:10000
+
+
+
+7. Kuyruk adı belirterek hive sorgusu çalıştırmak
+Sorgu dan önce 
+ jdbc:hive2://localhost:10000> set tez.queue.name=hive;
+
+
+8. Sorgu:
+0: jdbc:hive2://localhost:10000>  select workclass, COUNT(*) FROM `default`.adult_preprocessed GROUP by workclass;
+
+[Error: Failure while running task:java.lang.IllegalArgumentException: tez.runtime.io.sort.mb 396 should be larger than 0 and should be less than the available task memory (MB):178
+
+hatası alınır.
+Çözüm:
+
+Ambari -> Tez -> Config 
+Filter'a 
+tez.runtime.io.sort.mb
+karşısındaki değeri 170 yaptık 
+Save ettik 
+
+Ambari ana sayfadan restart all required diyoruz.
+
+
+
+9. YARN Resource Manager'dan hive kuyruğundan kaynak alındığı gözlenir.
+
+
+10. Dbeaver üzerinden 
+set tez.queue.name=hive;
+
+select workclass, COUNT(*) FROM `default`.adult_preprocessed GROUP by workclass;
+
+çalışan sorgunun YARN hive kuyruğundan kaynak aldığı gözlemlenir.
+
+
+
+
+
+
+
+

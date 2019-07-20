@@ -1,0 +1,51 @@
+Windows DBeaver Kurulumu
+
+
+[Uyarý] DBeaver Java
+Bir sonraki derste DBeaver SQL Editör Kurulumu yapacaðýz. 
+Bunun için Java8 gerekmektedir. Kurulum esnasýnda size JRE kurmayý önerir ancak biz 
+Bölüm-8'de Spark kurulumu öncesi java-8 yükleyeceðiz. 
+Karýþýklýk olmamasý için önce Bölüm-8'deki Java-8 kurulumunu yaptýktan sonra DBeaver kurulumuna geçerseniz iyi olur.
+
+
+1. 
+https://github.com/dbeaver/dbeaver/releases 
+adresinden 
+
+dbeaver-ce-6.1.2-x86_64-setup.exe
+
+dosyasýný indiriyoruz.
+
+2.
+Kurulum esnasýnda eðer java 8 sistemimizde kurulu ise JRE seçeneðini kaldýrýyoruz. Sadece Dbeaver Community seçelim
+
+
+3. 
+Kurulum sonrasý DBeaver çalýþtýrýlýr.
+
+
+4. 
+New Database Connection (fiþ ve + icon olan)  -> Apache Hive 
+
+Gelen yeni pencerede (connect to database)
+
+JDBC URL:jdbc:hive2://localhost:10000
+Host: sandbox-hdp.hortonworks.com
+Database/Schema:
+User name: hive
+Password: hive
+
+5. Test connection'a týklanýr. (Bu esnada connector indirmek için yeni encereler açýlýp sizden onay istenebilir)
+
+6. Sol menü aðacýndan Hive Connection sað týklanýr ve sql editör açýlarak sorgu yazýlabilir.
+
+
+Olasý hatalar ve çözümü:
+1. DBeaver Hive sorgusu esnasýnda 
+tez.runtime.io.sort.mb 594 should be larger than 0 and less than the available task memory (MB 178)
+hatasý
+
+Çözüm:
+Ambari arayüze gidilir
+Tez -> Config  -> tez.runtime.io.sort.mb
+deðeri 170 yapýlýr.

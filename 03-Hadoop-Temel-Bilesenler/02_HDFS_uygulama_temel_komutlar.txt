@@ -1,0 +1,65 @@
+Windows bilgisayarlarda kaç tane disk ortamı var daha iyi anlamak ve kopyalama yapmak açısından WinSCP kurulur.
+
+//// Sanal Makine Lokalinden HDFS'e veri taşıma ///////////////////
+1. ssh root@sandbox-hdp.hortonworks.com -p 2222 ile Sandbox' terminal den bağlanın
+
+2. Sanal makine Linux lokal diskine veri setini indirme:
+	kullanıcı değiştir.
+	[root@sandbox-hdp ~]# su maria_dev                                                                                                                                    
+	
+	[maria_dev@sandbox-hdp root]$ pwd                                                                                                                                     
+	Çıktı: /root                                                                                                                                                                 
+	
+	maria_dev kullanıcısının home dizinine geç 
+	[maria_dev@sandbox-hdp root]$ cd /home/maria_dev
+	
+	wget ile:
+	Github repo üzerinde istediğiniz veri setini gördükten sonra Raw'a tıklayın ve bağlantıyı kopyalayın:
+	Örnek aşağıda:
+		https://raw.githubusercontent.com/erkansirin78/hadoop-spark-for-developers/master/Datasets/simple_data.csv
+		
+	Veriyi indirin:	
+	[maria_dev@sandbox-hdp ~]$ wget https://raw.githubusercontent.com/erkansirin78/hadoop-spark-for-datascientists/master/Datasets/simple_data.csv
+	
+	Bu veri setini hdfs'e yüklemek için
+3. Sandbox linux lokal diskindeki bir veriyi HDFS'e taşıma, kopyalama:
+	
+	[maria_dev@sandbox-hdp ~]$ hdfs dfs -put simple_data.csv /user/maria_dev 
+	
+	Yüklemeyi kontrol için 
+	[maria_dev@sandbox-hdp ~]$ hdfs dfs -ls /user/maria_dev/simple_data.csv
+	
+	
+	YÜKLENEN VERİYİ HDFS TEN OKUMAK İÇİN 
+	[maria_dev@sandbox-hdp ~]$ hdfs dfs -cat /user/maria_dev/simple_data.csv
+	
+	maria_dev kullanıcısından tekrar root kullanıcısına dönmek için exit yazmak yeterli
+	
+	diğer kullanıcılara geçişi root kullanıcısından yapabiliriz.
+	
+3. Temel hdfs komutları
+	
+	3.1. Linux için root ne ise hdfs dünyasında hdfs odur.
+	
+	3.2. Sandbox terminalden hdfs kullanıcısına geçmek için 
+		[root@sandbox-hdp ~]# su hdfs
+		
+	3.3. hdfs dizinlerini listelemek için (Burada /user/maria_dev dizini listeleniyor)
+		
+		[hdfs@sandbox-hdp root]$ hdfs dfs -ls /user/maria_dev
+		Found 4 items
+		drwx------   - maria_dev hdfs          0 2019-04-23 23:33 /user/maria_dev/.Trash
+		drwxr-xr-x   - admin     hdfs          0 2019-04-21 18:26 /user/maria_dev/flume
+		-rw-r--r--   1 admin     hdfs       4613 2019-04-23 23:23 /user/maria_dev/iris.csv
+		-rwxr--r--   1 admin     hdfs        611 2019-04-23 22:52 /user/maria_dev/simple_data.csv
+	
+	3.4. hdfs dosyalarını okumak (cat)
+		hdfs dfs -cat hdfs://sandbox-hdp.hortonworks.com/user/maria_dev/simple_data.csv
+	
+	
+	3.5. hdfs'ten linux lokal diske veri kopyalama (copyToLocal)
+		hdfs dfs -copyToLocal hdfs://sandbox-hdp.hortonworks.com/user/maria_dev/simple_data.csv /home/maria_dev
+		
+Diğer hdfs komutları için referans:
+https://hadoop.apache.org/docs/r2.7.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#cat
+	

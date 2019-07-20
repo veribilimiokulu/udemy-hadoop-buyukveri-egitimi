@@ -1,0 +1,47 @@
+1.
+Intellij proje oluþtur.
+	proje dosyasý:
+	03-Hadoop-Temel-Bilesenler\mapreducewordcount
+
+
+2. 
+Mapreduce kodlarýný yaz.
+
+	kodlar:
+	03-Hadoop-Temel-Bilesenler\mapreducewordcount\kaynaklar\mapreduce-wordcount.txt
+
+	intellij proje pom dosyasý:
+	03-Hadoop-Temel-Bilesenler\mapreducewordcount\pom.xml
+
+
+3.
+Intellij üzerinden jar dosyasý oluþtur.
+
+4. 
+jar dosyasýný ana makineden sanal makineye kopyala
+
+WinSCP uygulamasý kullanýlabilir
+
+Alternatif olarak komut satýrýndan scp komutu kullanýlabilir 
+scp mapreducewordcount.jar cloudera@quickstart:
+
+
+5.
+word count yapýlacak text dosyasýný hdfs'e kopyala
+[cloudera@quickstart ~]$ hdfs dfs -put /home/cloudera/mapreduce/word-count.txt /user/cloudera
+
+6.
+wordcount programýný çalýþtýr 
+[cloudera@quickstart ~]$ hadoop jar /home/cloudera/mapreduce/mapreducewordcount.jar org.hadoop.trainings.WordCount /user/cloudera/word-count.txt /user/cloudera/mapreduce_output
+
+
+7.
+Sonuçlarý gör 
+[cloudera@quickstart ~]$ hdfs dfs -cat /user/cloudera/mapreduce_output/part-r-00000
+FRANK   7
+JOHN    8
+KUOA    4
+LEXA    1
+LUPA    3
+SMITH   1
+STEVE   5

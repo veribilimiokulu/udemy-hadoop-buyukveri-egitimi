@@ -1,0 +1,97 @@
+﻿PYTHON 3.6 KURULU İSE 4. ZEPPELIN PYSPARK TEST ADIMINA GEÇİNİZ:
+1.
+PYTHON 3.6 KURULUMU
+Yararlanılan kaynak :https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-centos-7
+
+		[root@sandbox-hdp /]# yum -y update
+		
+		[root@sandbox-hdp /]# yum -y install yum-utils
+		
+		root@sandbox-hdp /]# yum -y groupinstall development
+		
+		root@sandbox-hdp /]# yum -y install https://centos6.iuscommunity.org/ius-release.rpm
+		
+		root@sandbox-hdp /]# yum -y install python36u
+		
+		root@sandbox-hdp /]# yum -y install python36u-pip
+		[root@sandbox-hdp /]# pip3.6 install --upgrade pip
+
+		PİP3.6 KURULUMU (Artık Python 3 için paketlerimizi pip3.6 instal paket_adı ile yükleyeceğiz)
+		[root@sandbox-hdp /]# pip3.6 -V
+		Çıktı: pip 9.0.1 from /usr/lib/python3.6/site-packages (python 3.6)
+		
+		[root@sandbox-hdp /]# yum -y install python36u-devel
+
+		PYTHON PAKETLERİ
+
+		
+		[root@sandbox-hdp /]# pip3.6 install pandas matplotlib sklearn seaborn  findspark
+		
+2.		
+ZEPPELIN SPARK2 INTERPRETER AYARLARI:
+			
+		1. Ambari Arayüz -> Sol taraftaki Servislerden Zeppelin Notebook'u seç
+		
+		2. Üst taraftaki Quick Links'i aç veZeppelin UI'e tıkla 
+		
+		3. http://sandbox-hdp.hortonworks.com:9995/#/ adresinden Zeppelin çıkacaktır.
+		
+		4. Sağ üst köşede anonymus dropdown içinden Interpreters'ı seç
+		
+		5. Search Interpreter kutusunda Spark2 kelimesini ara karşına Spark2 interpreter'ı gelecektir.
+		
+		6. Sağ taraftan edit diyelim
+		
+		7. zeppelin.pyspark.python değerin python idi onu python3.6 yapalım.
+		
+		8. Save deyip çıkalım.
+3.		
+SPARK2 ENVIRONMENT AYARLARI:
+
+		1. Ambari arayüzden Sol taraftaki servislerden Spark2 seçelim.
+		
+		2. YukarıdakiConfigs tab'ını seçelim.
+		
+		3. Advanced spark2-env -> content içinde en alt satıra aşağıdaki eklemeyi yapalım:
+		
+			# Python3.6 yüklendikten sonra
+			PYSPARK_PYTHON=python3.6
+			PYSPARK_DRIVER_PYTHON=python3.6
+		
+		
+		4. Sağ üstten değişiklikleri Save diyelim.
+		
+		5. Ambari'den Spark2 servisini yeniden başlatmak isteyecektir. Başlatalım.
+		
+		6. Sarı döngü yuvarlağı ile başka servisleri de başlatmak istiyorsa hepsini yeniden başlatalım.
+		
+4.		
+ZEPPELIN PYSPARK TEST:
+		1. Zeppelin Ana sayfada (http://sandbox-hdp.hortonworks.com:9995/#/)
+		
+		2. Create new note tıklayalım.
+		
+		3. İsmini belirleyelim örneğin Pyspark_python3.6_deneme olsun. Default Interprete Spark2 seçili olsun 
+		
+		4. İlk parağrafta
+			%pyspark
+			spark.version
+			
+			komutlarını çalıştıralım. 
+			Çalışması zaman alacaktır. 
+			Spark uygulamasının başladığını YARN -Resource Manager üzerinden takip edelim.
+			
+			RUNNIG durumuna gelince Zeppelin üzerinde sonucu gözlemleyelim:
+			'2.2.0.2.6.4.0-91'
+			
+		Artık PySpark kullanmaya hazırız.	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

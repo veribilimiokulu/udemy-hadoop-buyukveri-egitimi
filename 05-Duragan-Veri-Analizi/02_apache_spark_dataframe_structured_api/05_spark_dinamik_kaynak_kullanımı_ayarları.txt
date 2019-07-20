@@ -1,0 +1,9 @@
+spark.dynamicAllocation.enabled=true
+     
+spark.dynamicAllocation.initialExecutors=1
+     
+spark.dynamicAllocation.maxExecutors=30
+     
+spark.dynamicAllocation.minExecutors=1
+     
+spark.shuffle.service.enabled=true

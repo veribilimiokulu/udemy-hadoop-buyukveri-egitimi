@@ -1,0 +1,53 @@
+1. YARN Resource Manager arayüzünden YARN uygulamasının yolculuğu gözlemlernir.
+	ResourceManager arayüzüne Ambari -> YARN -> QuickLinks -> ResourceManager UI ile ulaşabiliriz
+	
+	
+2. Ambari YARN Queue Manager üzerinden YARN kuyruk mekanizması ve çalışma mantığı incelenir.
+
+
+
+3. YARN Kuyruklarına kullanıcılar nasıl bağlanır.
+
+	3.1. Ambari -> YARN Queue Manager üzerinden root kuyuruğa bağlı olarak hive kuyruğu yaratılır
+	
+	3.2. hive %60, default % 40 kaynak verilir.
+	
+	3.3. Ambari -> YARN -> Configs -> Scheduler -> Capacity Scheduler içinde
+		
+		3.3.1. yarn.scheduler.capacity.root.default.acl_submit_applications= 
+				karşısındaki *'ı silip bir boşluk bırakıyoruz.
+		
+		3.3.2. yarn.scheduler.capacity.queue-mappings=u:hive:hive
+				değerini en alt satıra ekliyoruz
+				
+				
+	3.4. DBeaver üzerinden bir sorgu çalıştırıyoruz. YARN Resource Manager üzerinden artık uygulamanın hive
+			kuyruğundan başladığını gözlemliyoruz.
+
+	3.5. Detaylı bilgi:https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.6.4/bk_yarn-resource-management/content/controlling_access_to_queues_with_acls.html
+
+
+4. YARN Memory arttırma
+Sandbox'ı başlatmadan önce sitemden belleğini 10240 yaptıktan sonra
+
+Ambari -> YARN -> Configs -> Memory -> 5120
+Save -> Ok -> Proceed anyway 
+
+Ambari sol alt -> Restart all required 
+
+başlaması gerekenler başlar.
+
+
+5. YARN uygulamalarını komut satırı ile sonlandırma
+	su yarn
+	yarn application -kill <application_id>
+	Örnek:
+	yarn application -kill application_1559027572301_0001
+	
+	
+	
+	
+	
+	
+	
+	
