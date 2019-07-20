@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: org.hadoop.trainings.WordCount
+Main-Class: com.veribilimiokulu.mapreduce.MR2WordCount
 

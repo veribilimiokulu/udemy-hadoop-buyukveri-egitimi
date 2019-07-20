@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="MR2WordCount:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="0e6c363a-34b0-4dab-9142-5859fb5b2b49" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../02-Buyuk-Veri-ve-Hadoop-Giris/Hadoop_Hive_Tablosu_Olarak_Veri_Yuklemek/adult.data" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/DBeaver-Kurulumu.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../05-Duragan-Veri-Analizi/Sandbox-Jupyter-Kurulumu.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../01-Giris/02_sandbox_kurulum_ve_on_ayarlar.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../01-Giris/02_sandbox_kurulum_ve_on_ayarlar.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../05-map_reduce_teori.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../05-map_reduce_teori.pptx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06_map_reduce_uygulama.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../06_map_reduce_uygulama.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/mapreducewordcount_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hadoop/trainings/WordCount.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -15,11 +24,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
@@ -30,10 +38,34 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/hadoop/trainings/WordCount.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/MR2WordCount.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="25" column="38" lean-forward="true" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+            <state relative-caret-position="238">
+              <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/MapForWordCount.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/ReduceForWordCount.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -58,6 +90,11 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/org/hadoop/trainings/WordCount.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/ErkanWordCount.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/WordCount.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/MapForWordCount.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/ReduceForWordCount.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/MR2WordCount.java" />
       </list>
     </option>
   </component>
@@ -76,9 +113,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="489" />
-    <option name="y" value="51" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="374" />
+    <option name="y" value="49" />
     <option name="width" value="1096" />
     <option name="height" value="1012" />
   </component>
@@ -90,17 +127,55 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="mapreducewordcount" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mapreducewordcount" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mapreducewordcount" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mapreducewordcount" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mapreducewordcount" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mapreducewordcount" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mapreducewordcount" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mapreducewordcount" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mapreducewordcount" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mapreducewordcount" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="mapreduce" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../ignored_files" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../ignored_files/mapreducewordcount_jar" />
     <property name="project.structure.last.edited" value="Artifacts" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -115,8 +190,8 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="WordCount" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="org.hadoop.trainings.WordCount" />
+    <configuration name="MR2WordCount" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.veribilimiokulu.mapreduce.MR2WordCount" />
       <module name="mapreducewordcount" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -146,20 +221,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="489" y="51" width="1096" height="1012" extended-state="0" />
+    <frame x="959" y="36" width="1096" height="1012" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Image Layers" />
-      <window_info id="Designer" />
-      <window_info id="UI Designer" />
-      <window_info id="Capture Tool" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19401544" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.115830116" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" weight="0.32992035" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32992035" />
@@ -167,14 +238,18 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Palette" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="right" id="Maven" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info active="true" anchor="bottom" id="Messages" order="10" visible="true" weight="0.34584755" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Maven" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
   </component>
   <component name="editorHistoryManager">
@@ -187,8 +262,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/hadoop/trainings/WordCount.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="25" column="38" lean-forward="true" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+        <state relative-caret-position="94">
+          <caret line="20" lean-forward="true" selection-end-line="100" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/MapForWordCount.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/ReduceForWordCount.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/MR2WordCount.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -201,7 +306,7 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>mapreducewordcount:jar</last-edited>
+          <last-edited>MR2WordCount:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

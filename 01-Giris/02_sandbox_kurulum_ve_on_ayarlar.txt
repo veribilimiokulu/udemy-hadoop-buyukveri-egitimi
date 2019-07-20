@@ -1,25 +1,23 @@
 1. VirtualBox'ı indir.
 
-2. HDP 2.6.4 Sandbox kopyala
+2. HDP_2.6.4_virtualbox_01_02_2018_1428.ova dosyasını indir.
 
 3. VirtualBox kur 
-	Mac'te bunun için güvenlik ayarlarından üçüncü parti yazılım kurulumuna izin ver. 
+	(Mac'te bunun için güvenlik ayarlarından üçüncü parti yazılım kurulumuna izin ver.) 
 
-4. Sandbox'ı VirtualBox üzerinde aç (mac için küçük boyutlu dosyaya tıklayarak aç)
+4. VirtualBox üzerinde Dosya -> Cihazı İçeri Aktar... ile 2. maddedeki HDP_2.6.4_virtualbox_01_02_2018_1428.ova
+	dosyasını seç.
+	(mac için küçük boyutlu dosyaya tıklayarak aç)
 	
-5. Git ile eğitim için bir dizin oluştur:
-	Komut: mkdir egitim_icerigi
+5. GitBash ile eğitim için bir dizin oluştur:
+	mkdir big_data_egitim	
+	cd big_data_egitim
+	git init 
+			komutu ile bu dizinde git'i başlat.
 	
-	Komut: cd egitim_icerigi
-	
-	içine girip
-	
-	Komut: git init 
-	ile bu dizinde git'i başlat.
-	
-	İstersek bu dizin içinde 
-	ls -al ile 
-	.git klasörünü ve içeriğini görebiliriz (genel git bilgisi)
+			İstersek bu dizin içinde 
+			ls -al ile 
+			.git klasörünü ve içeriğini görebiliriz (genel git bilgisi)
 	
 6. Kursun github reposunu ekleme
 	Komut: git remote add spark https://github.com/erkansirin78/hadoop-spark-for-developers.git
