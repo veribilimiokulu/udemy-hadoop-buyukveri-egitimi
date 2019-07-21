@@ -7,9 +7,6 @@ Intellij proje oluþtur.
 2. 
 Mapreduce kodlarýný yaz.
 
-	kodlar:
-	03-Hadoop-Temel-Bilesenler\mapreducewordcount\kaynaklar\kuruyemisler.txt
-
 	intellij proje pom.xml dosyasý:
 	03-Hadoop-Temel-Bilesenler\mapreducewordcount\pom.xml
 

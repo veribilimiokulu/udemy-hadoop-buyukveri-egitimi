@@ -1,0 +1,146 @@
+
+Server/Dağıtık mode kurulumu
+
+1.  Ön gereksinimler
+	- java 8 kurulu olmalıdır.
+	- Zookeeper kurulu olmalıdır 
+	- HDFS veya Amazon S3 gibi dağıtık bir dosya sistemi
+
+
+2. Drill'i indirelim
+wget http://archive.apache.org/dist/drill/drill-1.12.0/apache-drill-1.12.0.tar.gz
+	
+	Eski sürüm:	Hive ile çalışırlığı test edildi.
+
+3.
+
+tar xzf apache-drill-1.12.0.tar.gz
+cd apache-drill-1.12.0
+
+4. 
+HDP'de açık olan portlardan birini kullanalım
+[maria_dev@sandbox-hdp drill]$ bin/drillbit.sh start -Ddrill.exec.http.port=8086
+		varsayılan port 8047
+		
+		Starting drillbit, logging to /home/maria_dev/apache-drill-1.12.0/log/drillbit.out
+
+		
+[maria_dev@sandbox-hdp drill]$ bin/drillbit.sh status
+		drillbit is running.
+
+
+5. Browser'ı açalım
+sandbox-hdp.hortonworks.com:8086 ile drill arayüzüne ulaşalım
+
+6. Storage'a tıklayalım ,	
+	6.1. Hive Enable 
+		(yukarı geçecek)
+		
+	6.2. Hive plugin update
+		hive.metastore.uris
+		değeri boş ona 
+		thrift://sandbox-hdp.hortonworks.com:9083
+		değerini girelim.
+	"fs.default.name": "hdfs://sandbox-hdp.hortonworks.com:8020/"
+	değerini girelim 
+	
+		update'e tıklayıp çıkalım.
+	
+	6.4.HDFS dosyalarının sorgulanması için dfs plugin update'e tıklayalım.  
+		"connection": "hdfs://sandbox-hdp.hortonworks.com:8020/"
+		
+		
+		6.4.1. csv başlık bilgilerini görmesi için 
+		csv bölümüne "extractHeader": true, eklemeliyiz
+		sonuçta aşağıdaki hale gelecektir.
+			 "csv": {
+			  "type": "text",
+			  "extensions": [
+				"csv"
+			  ],
+			  "extractHeader": true,
+			  "delimiter": ","
+			},
+		
+		satırını yukarıdaki gibi güncelleyelim 	update deyip çıkalım.
+
+7. Query sekmesinden sorgu çalıştıralım
+	7.1. Drill versiyonu öğrenme
+		SELECT version FROM sys.version;
+		
+	7.2. Örnek sorgu 
+		SELECT * FROM cp.`employee.json` LIMIT 20
+	
+	7.3. SHOW DATABASES;
+		veri tabanı ve tanımlanan dosya sistemleri görüntülenecektir.
+		
+	7.4. Eski sorguları Profiles sekmesinden görebiliriz.
+
+	7.5. Hive verilerini sorgulama:
+	
+		SELECT * FROM hive.default.adult_preprocessed LIMIT 10
+		
+		Not: Hive default şemasındaki tabloları sorgularken sorguda default kullanmıyoruz.
+
+	7.6. HDFS verilerini sorgulama:
+		
+		7.6.1. csv dosyasından:
+		
+		SELECT * FROM dfs.root.`/user/erkan/retail_db/orders.csv` LIMIT 20;
+		
+		GROUP BY SORGU sorgu:
+			SELECT orderStatus, COUNT(*) AS SAYI 
+			FROM dfs.root.`/user/erkan/retail_db/orders.csv` 
+			GROUP BY orderStatus 
+			ORDER BY SAYI DESC
+			LIMIT 20;
+		
+		
+		7.6.2. retail_db en çok satan ilk 10 kategori
+
+SELECT categories.categoryName, SUM(CAST(order_items.orderItemSubTotal AS DOUBLE)) AS orderItemSubTotal  FROM dfs.root.`/user/erkan/retail_db/order_items.csv` AS order_items
+JOIN dfs.root.`/user/erkan/retail_db/products.csv` AS products ON order_items.orderItemProductId = products.productId
+JOIN dfs.root.`/user/erkan/retail_db/categories.csv` AS categories ON products.productCategoryId = categories.categoryId
+GROUP BY categories.categoryName
+ORDER BY orderItemSubTotal  DESC
+LIMIT 10
+		
+		
+		7.6.3. json format sorgu:
+			https://raw.githubusercontent.com/erkansirin78/datasets/master/iris.json adresindeki dosya HDFS'e yüklendikten sonra:
+		
+		7.6.3.1. Normal SELECT
+			SELECT * FROM dfs.root.`user/erkan/iris.json` LIMIT 20
+		
+		7.6.3.2. GROUP BY 
+			SELECT Species, COUNT(*) AS SAYI FROM dfs.root.`user/erkan/iris.json` GROUP BY Species LIMIT 20
+
+8. Drill'i kapatma
+
+bin/drillbit.sh stop
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

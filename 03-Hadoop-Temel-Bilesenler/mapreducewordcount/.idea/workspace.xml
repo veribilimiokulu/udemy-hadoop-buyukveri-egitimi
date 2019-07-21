@@ -6,15 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e6c363a-34b0-4dab-9142-5859fb5b2b49" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../01-Giris/02_sandbox_kurulum_ve_on_ayarlar.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../01-Giris/02_sandbox_kurulum_ve_on_ayarlar.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../05-map_reduce_teori.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../05-map_reduce_teori.pptx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../06_map_reduce_uygulama.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../06_map_reduce_uygulama.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/mapreducewordcount_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hadoop/trainings/WordCount.java" beforeDir="false" />
-    </list>
+    <list default="true" id="0e6c363a-34b0-4dab-9142-5859fb5b2b49" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,8 +32,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/MR2WordCount.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+            <state relative-caret-position="85">
+              <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -113,7 +105,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="374" />
     <option name="y" value="49" />
     <option name="width" value="1096" />
@@ -221,8 +213,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="959" y="36" width="1096" height="1012" extended-state="0" />
-    <editor active="true" />
+    <frame x="374" y="49" width="1096" height="1012" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.115830116" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -292,8 +283,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/veribilimiokulu/mapreduce/MR2WordCount.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+        <state relative-caret-position="85">
+          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
