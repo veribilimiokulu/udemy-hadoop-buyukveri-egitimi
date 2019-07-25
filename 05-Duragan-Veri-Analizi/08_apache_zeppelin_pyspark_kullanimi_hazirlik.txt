@@ -2,9 +2,11 @@
 1.
 PYTHON 3.6 KURULUMU
 Yararlanılan kaynak :https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-centos-7
+Kurulum sonrası sandbox'ı yeniden başlatmak gerekebilir. Bu sebeple Ambari servislerini durdurunuz.
+Ve zamanı ona göre planlayınız. il komut uzun sürecek ve ssh ve Ambari bağlantısını kaybedeceksiniz.
 
 		[root@sandbox-hdp /]# yum -y update
-		
+			
 		[root@sandbox-hdp /]# yum -y install yum-utils
 		
 		root@sandbox-hdp /]# yum -y groupinstall development

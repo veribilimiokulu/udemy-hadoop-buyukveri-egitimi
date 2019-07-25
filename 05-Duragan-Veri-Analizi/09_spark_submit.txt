@@ -1,0 +1,79 @@
+1. Veri bilimciler için Jupyter, Zeppelin gibi Notebooklar'da kod geliştirmek daha kolaydır. 
+Notebook'lar IDE'nin karmaşıklığından uzak daha sade bir kod geliştirme deneyimi sunar. 
+
+
+2. Notebook kullanılırken çok fazla parağraf kullanılmamalıdır. 
+Belli bir sayıya ulaşınca (örneğin 30) denenip sonucu gözlenen kodlar aynı parağrafta birleştirilebilir.
+
+
+3. Kod geliştirme tamamlanınca kodlar gerçek ortamda çalıştırılmak üzere ilgili dilin uzantılı dosyasında birleştirilir. 
+Örneğin my_app.py uzantısıyla
+myApp.scala kodları maven veya sbt ile derlenir ve .jar haline getirilir.
+
+
+
+4. 
+spark-submit \
+  --class <main-class> \
+  --master <master-url> \
+  --deploy-mode <deploy-mode> \
+  --conf <key>=<value> \
+  ... # other options
+  <application-jar> \
+  [application-arguments]
+  
+Basit bir pyspark uygulaması submit örneği:
+
+spark-submit --master yarn kod_dosyasi.py 
+
+
+
+5. 
+Spark'ın kaynakları dinamik olarak alıp bırakması:
+https://community.hortonworks.com/content/supportkb/49510/how-to-enable-dynamic-resource-allocation-in-spark.html
+yazıdaki parametre değişiklikleri ile yapılabilir.
+
+
+Custom Spark2 defaults
+
+spark.dynamicAllocation.enabled = true 
+spark.shuffle.service.enabled = true 
+spark.dynamicAllocation.initialExecutors = 3 (Initial number of executors to run if dynamic allocation is enabled, this is same as "spark.dynamicAllocation.minExecutors") 
+spark.dynamicAllocation.minExecutors = 3 (executors number will come to this number if executors are not in use, after 60 sec(default), controlled by "spark.dynamicAllocation. executorIdleTimeout") 
+spark.dynamicAllocation.maxExecutors = 30 (maximum executors that job can request)
+
+
+
+eklenir.
+
+Bu ayarlar eklendikten sonra spark-submit te ayrıca kaynak belirlemeye gerek yoktur.
+
+
+
+6. Windows üzerine kurulu bir Spark ile jar dosyası haline getirilmiş uygulamanın submit edilmesi:
+C:\Users\user>spark-submit --class org.apache.spark.examples.SparkPi --master local[4] D:\spark\examples\jars\spark-examples_2.11-2.3.2.jar
+
+Sonuç:
+19/07/24 00:59:44 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Pi is roughly 3.144875724378622
+
+
+
+
+7.
+Diğer spark-submit örnekleri:
+===============================================================================
+Run application locally on 8 cores
+./bin/spark-submit \ --class org.apache.spark.examples.SparkPi \ --master local[8] \ /path/to/examples.jar \ 100
+
+Run on a Spark standalone cluster in client deploy mode
+./bin/spark-submit \ --class org.apache.spark.examples.SparkPi \ --master spark://207.184.161.138:7077 \ --executor-memory 20G \ --total-executor-cores 100 \ /path/to/examples.jar \ 1000
+
+Run on a Spark standalone cluster in cluster deploy mode with supervise
+./bin/spark-submit \ --class org.apache.spark.examples.SparkPi \ --master spark://207.184.161.138:7077 \ --deploy-mode cluster \ --supervise \ --executor-memory 20G \ --total-executor-cores 100 \ /path/to/examples.jar \ 1000
+
+Run on a YARN cluster
+export HADOOP_CONF_DIR=XXX ./bin/spark-submit \ --class org.apache.spark.examples.SparkPi \ --master yarn \ --deploy-mode cluster \ # can be client for client mode --executor-memory 20G \ --num-executors 50 \ /path/to/examples.jar \ 1000
+
+Run a Python application on a Spark standalone cluster
+./bin/spark-submit \ --master spark://207.184.161.138:7077 \ examples/src/main/python/pi.py \ 1000

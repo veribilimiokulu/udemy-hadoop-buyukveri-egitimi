@@ -1,7 +1,9 @@
 Windows bilgisayarlarda kaç tane disk ortamı var daha iyi anlamak ve kopyalama yapmak açısından WinSCP kurulur.
 
 //// Sanal Makine Lokalinden HDFS'e veri taşıma ///////////////////
-1. ssh root@sandbox-hdp.hortonworks.com -p 2222 ile Sandbox' terminal den bağlanın
+1. 
+ssh root@sandbox-hdp.hortonworks.com -p 2222 
+ile Sandbox' terminalden bağlanın
 
 2. Sanal makine Linux lokal diskine veri setini indirme:
 	kullanıcı değiştir.
@@ -16,10 +18,10 @@ Windows bilgisayarlarda kaç tane disk ortamı var daha iyi anlamak ve kopyalama
 	wget ile:
 	Github repo üzerinde istediğiniz veri setini gördükten sonra Raw'a tıklayın ve bağlantıyı kopyalayın:
 	Örnek aşağıda:
-		https://raw.githubusercontent.com/erkansirin78/hadoop-spark-for-developers/master/Datasets/simple_data.csv
+		https://raw.githubusercontent.com/erkansirin78/datasets/master/simple_data.csv
 		
 	Veriyi indirin:	
-	[maria_dev@sandbox-hdp ~]$ wget https://raw.githubusercontent.com/erkansirin78/hadoop-spark-for-datascientists/master/Datasets/simple_data.csv
+	[maria_dev@sandbox-hdp ~]$ wget https://raw.githubusercontent.com/erkansirin78/datasets/master/simple_data.csv
 	
 	Bu veri setini hdfs'e yüklemek için
 3. Sandbox linux lokal diskindeki bir veriyi HDFS'e taşıma, kopyalama:
@@ -59,6 +61,8 @@ Windows bilgisayarlarda kaç tane disk ortamı var daha iyi anlamak ve kopyalama
 	
 	3.5. hdfs'ten linux lokal diske veri kopyalama (copyToLocal)
 		hdfs dfs -copyToLocal hdfs://sandbox-hdp.hortonworks.com/user/maria_dev/simple_data.csv /home/maria_dev
+		
+		Not: Bu operasyon için hedef dizinde okuma yetkisi, lokal diskte yazma yetkisi bulunmalıdır.
 		
 Diğer hdfs komutları için referans:
 https://hadoop.apache.org/docs/r2.7.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#cat

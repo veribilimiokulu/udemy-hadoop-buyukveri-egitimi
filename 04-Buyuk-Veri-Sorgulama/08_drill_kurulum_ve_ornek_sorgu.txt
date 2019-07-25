@@ -5,9 +5,9 @@ Server/Dağıtık mode kurulumu
 	- java 8 kurulu olmalıdır.
 	- Zookeeper kurulu olmalıdır 
 	- HDFS veya Amazon S3 gibi dağıtık bir dosya sistemi
+	- Sandbox'ta yeterli RAM olmalıdır. HBase,Oozie, Falcon, Storm,Flume, AmbariInfra, Kafka, Knox kapalı olmalıdır.
 
-
-2. Drill'i indirelim
+2. /home/maria_dev  Drill'i indirelim
 wget http://archive.apache.org/dist/drill/drill-1.12.0/apache-drill-1.12.0.tar.gz
 	
 	Eski sürüm:	Hive ile çalışırlığı test edildi.
@@ -19,6 +19,7 @@ cd apache-drill-1.12.0
 
 4. 
 HDP'de açık olan portlardan birini kullanalım
+cd apache-drill-1.12
 [maria_dev@sandbox-hdp drill]$ bin/drillbit.sh start -Ddrill.exec.http.port=8086
 		varsayılan port 8047
 		

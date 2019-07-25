@@ -1,0 +1,238 @@
+Phoenix Kurulum
+
+1. Ambari üzerinden Hbase'i çalıştırınız.
+
+2. ssh (Putty) ile Sandbox'a maria_dev kullanıcısı ile bağlan, şifresi maria_dev.
+	yum ile paket yükleyeceğimiz için
+	su root
+	komutu ile root kullanıcısına geç, şifresi Ankara06 (Sandbox'ı kurarken belirlemiştik)
+
+3. Phoenix reposunu kontrol edelim
+yum info phoenix
+
+	En sonda şuna benzer bilgiler gelmelidir.
+	Available Packages
+	Name        : phoenix
+	Arch        : noarch
+	Version     : 4.7.0.2.6.4.0
+	Release     : 91
+	Size        : 2.5 k
+	Repo        : HDP-2.6-repo-1
+	Summary     : phoenix Distro virtual package
+	License     : APL2
+	Description : phoenix-4.7.0.2.6.4.0 virtual package
+
+
+4. Kurulum 
+yum install phoenix
+
+
+5. Kurulum diznine geçme
+ cd /usr/hdp/current/phoenix-client/
+ 
+6. Phoenix komut satırını çalıştırma:
+ python bin/sqlline.py
+ 
+ Bir sürü info sonrası bitiş satırları:
+ Building list of tables and columns for tab-completion (set fastconnect to true to skip)...
+87/87 (100%) Done
+Done
+sqlline version 1.1.8
+
+
+ komut sonrası karşımıza şöyle bir komut satırı gelecektir
+ 0: jdbc:phoenix:>
+ 
+ 7. HBase tablolarını listeleme
+ 0: jdbc:phoenix:> !tables
+		 Örnek sonuç:
+		+------------+--------------+-------------+---------------+----------+------------+------------------+
+		| TABLE_CAT  | TABLE_SCHEM  | TABLE_NAME  |  TABLE_TYPE   | REMARKS  | TYPE_NAME  | SELF_REFERENCING |
+		+------------+--------------+-------------+---------------+----------+------------+------------------+
+		|            | SYSTEM       | CATALOG     | SYSTEM TABLE  |          |            |                  |
+		|            | SYSTEM       | FUNCTION    | SYSTEM TABLE  |          |            |                  |
+		|            | SYSTEM       | SEQUENCE    | SYSTEM TABLE  |          |            |                  |
+		|            | SYSTEM       | STATS       | SYSTEM TABLE  |          |            |                  |
+		+------------+--------------+-------------+---------------+----------+------------+------------------+
+
+
+
+UYGULAMA-1: Phoenix Komut satırı
+==============================================================================================================		 
+ 8. TABLO YARATMA
+ 
+ Veri türleri: https://phoenix.apache.org/language/datatypes.html
+ sqlline kaynak: http://sqlline.sourceforge.net/
+ 
+ 0: jdbc:phoenix:> 
+  
+ CREATE TABLE IF NOT EXISTS order_items(
+ orderItemName INTEGER  NOT NULL,
+ orderItemOrderId INTEGER ,
+ orderItemProductId INTEGER,
+ orderItemQuantity INTEGER,
+ orderItemSubTotal FLOAT,
+ orderItemProductPrice FLOAT,
+ CONSTRAINT orderItemName_pk PRIMARY KEY (orderItemName));
+ 
+ 
+ tablo yaratılmış mı kontrol edelim:
+ 
+ 0: jdbc:phoenix:> !tables
+		+------------+--------------+--------------+---------------+----------+------------+-----------------+
+		| TABLE_CAT  | TABLE_SCHEM  |  TABLE_NAME  |  TABLE_TYPE   | REMARKS  | TYPE_NAME  | SELF_REFERENCIN |
+		+------------+--------------+--------------+---------------+----------+------------+-----------------+
+		|            | SYSTEM       | CATALOG      | SYSTEM TABLE  |          |            |                 |
+		|            | SYSTEM       | FUNCTION     | SYSTEM TABLE  |          |            |                 |
+		|            | SYSTEM       | SEQUENCE     | SYSTEM TABLE  |          |            |                 |
+		|            | SYSTEM       | STATS        | SYSTEM TABLE  |          |            |                 |
+		|            |              | ORDER_ITEMS  | TABLE         |          |            |                 |
+		+------------+--------------+--------------+---------------+----------+------------+-----------------+
+ 
+ 
+ 9. VERİ EKLEME (UPSERT) INSERT değil
+ 
+ UPSERT INTO ORDER_ITEMS VALUES (1,1,957,1,299.98,299.98);
+ 1 row affected (0.079 seconds)
+ 
+ UPSERT INTO ORDER_ITEMS VALUES (2,2,1073,1,199.99,199.99);
+ 1 row affected (0.009 seconds)
+ 
+ 10. VERİ SORGULAMA (SELECT)
+ SELECT * FROM ORDER_ITEMS;
+ +----------------+-------------------+---------------------+--------------------+--------------------+
+| ORDERITEMNAME  | ORDERITEMORDERID  | ORDERITEMPRODUCTID  | ORDERITEMQUANTITY  | ORDERITEMSUBTOTAL  |
++----------------+-------------------+---------------------+--------------------+--------------------+
+| 1              | 1                 | 957                 | 1                  | 299.98             |
+| 2              | 2                 | 1073                | 1                  | 199.99             |
++----------------+-------------------+---------------------+--------------------+--------------------+
+ 
+ 
+ 10. TABLO SİLME (DROP)
+ DROP TABLE ORDER_ITEMS;
+ No rows affected (3.64 seconds)
+ 
+ 0: jdbc:phoenix:> !tables
++------------+--------------+-------------+---------------+----------+------------+------------------+
+| TABLE_CAT  | TABLE_SCHEM  | TABLE_NAME  |  TABLE_TYPE   | REMARKS  | TYPE_NAME  | SELF_REFERENCING |
++------------+--------------+-------------+---------------+----------+------------+------------------+
+|            | SYSTEM       | CATALOG     | SYSTEM TABLE  |          |            |                  |
+|            | SYSTEM       | FUNCTION    | SYSTEM TABLE  |          |            |                  |
+|            | SYSTEM       | SEQUENCE    | SYSTEM TABLE  |          |            |                  |
+|            | SYSTEM       | STATS       | SYSTEM TABLE  |          |            |                  |
++------------+--------------+-------------+---------------+----------+------------+------------------+
+ 
+ 
+ 
+ 11. ÇIKIŞ
+ !quit
+ 
+ 
+UYGULAMA-2: Sqlline ile csv dosyasından tablo yaratma ve veri ekleme
+=======================================================================================================
+ 12.
+  cd bin/ ile bin klasörüne giriniz
+ vi us_population.sql 
+ 
+ ile squzantılı bir dosya oluşturuğ içine aşağıdaki komutu ekleyiniz
+ 
+CREATE TABLE IF NOT EXISTS us_population (
+state CHAR(2) NOT NULL,
+city VARCHAR NOT NULL,
+population BIGINT
+CONSTRAINT my_pk PRIMARY KEY (state, city));
+ 
+ 
+ 13. 
+vi us_population.csv  
+
+adında bir csv dosyası oluşturarak aşağıdaki kayıtları içine giriniz 
+ 
+NY,New York,8143197
+CA,Los Angeles,3844829
+IL,Chicago,2842518
+TX,Houston,2016582
+PA,Philadelphia,1463281
+AZ,Phoenix,1461575
+TX,San Antonio,1256509
+CA,San Diego,1255540
+TX,Dallas,1213825
+CA,San Jose,912332
+
+
+
+14. 
+vi us_population_queries.sql  
+
+adında dosya yaratarak aşağıdaki SQL satırlarını giriniz
+
+
+SELECT state as "State",count(city) as "City Count",sum(population) as "Population Sum"
+FROM us_population
+GROUP BY state
+ORDER BY sum(population) DESC;
+
+
+
+15.
+
+./psql.py sandbox-hdp.hortonworks.com:2181 us_population.sql us_population.csv us_population_queries.sql
+
+Sonuç aşağıdaki gibi olmalıdır.
+
+[root@sandbox-hdp bin]# ./psql.py sandbox-hdp.hortonworks.com:2181 us_population.sql us_population.csv us_population_queries.sql
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/hdp/2.5.0.0-1245/phoenix/phoenix-4.7.0.2.5.0.0-1245-client.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/hdp/2.6.4.0-91/hadoop/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+19/07/22 18:11:02 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+19/07/22 18:11:03 WARN shortcircuit.DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
+no rows upserted
+Time: 1.646 sec(s)
+
+csv columns from database.
+CSV Upsert complete. 10 rows upserted
+Time: 0.047 sec(s)
+
+St                               City Count                           Population Sum
+-- ---------------------------------------- ----------------------------------------
+NY                                        1                                  8143197
+CA                                        3                                  6012701
+TX                                        3                                  4486916
+IL                                        1                                  2842518
+PA                                        1                                  1463281
+AZ                                        1                                  1461575
+Time: 0.033 sec(s)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

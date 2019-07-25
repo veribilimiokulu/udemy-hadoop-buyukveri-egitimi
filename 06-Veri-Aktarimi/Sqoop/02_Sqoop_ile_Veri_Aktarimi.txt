@@ -1,13 +1,23 @@
-Bu derste 
-1. mysql veri tabanında bir veri tabanı ve tablo yaratma 
-	1.1. mysql veri tabanına shell ile bağlanma:
+
+
+====================================================================================
+UYGULAMA-1  (mysql -> sqoop ->  hdfs)
+====================================================================================
+Bu uygulamada mysql veri tabanında bir tablo oluşturularak iris verisi bu tabloya yazılacak,
+sqoop ile bu tablo okunup hdfs'e aktarılacaktır.
+
+1. mysql veri tabanına yüklenecek iris.csv dosyasını lokal diske indirme:
+[root@sandbox-hdp ~]# wget https://raw.githubusercontent.com/erkansirin78/datasets/master/iris.csv
+
+2. mysql veri tabanında bir veri tabanı ve tablo yaratma 
+	2.1. mysql veri tabanına shell ile bağlanma:
 	[root@sandbox-hdp ~]# mysql -u root -p
 		Şifre: hadoop
 		
-	1.2. yeni bir veri tabanı yaratma:
+	2.2. yeni bir veri tabanı yaratma:
 	[root@sandbox-hdp ~]# create database azhadoop;
 	
-	1.3. Mevcut veri tabanlarını görüntüleme:
+	2.3. Mevcut veri tabanlarını görüntüleme:
 	mysql> show databases;
 		+--------------------+
 		| Database           |
@@ -21,45 +31,48 @@ Bu derste
 		+--------------------+
 		6 rows in set (0.04 sec)
 		
-	1.4. azhadoop vertabanına yetki
+	2.4. azhadoop vertabanına yetki
 mysql> GRANT ALL PRIVILEGES ON azhadoop.* TO 'root'@'localhost';
 mysql> GRANT ALL PRIVILEGES ON azhadoop.* TO 'root'@'sandbox-hdp.hortonworks.com';
 
-	1.5. Kullanılacak veri tabanını seçme:
+	2.5. Kullanılacak veri tabanını seçme:
 	mysql> use azhadoop;
 	Database changed
 	
-	1.6. Veri tabanındaki tabloları listeleme:
+	2.6. Veri tabanındaki tabloları listeleme:
 	mysql> show tables;
 	Empty set (0.00 sec)
 	
 	boş
 	
 	
-2. iris.csv doyasının içeriği bu tabloya aktarma
+3. iris.csv doyasının içeriği bu tabloya aktarma
 
-	2.1. iris veri setine uygun tablo yaratma 
+	3.1. iris veri setine uygun tablo yaratma 
 	
 	mysql> create table iris_mysql(SepalLengthCm double, SepalWidthCm double, PetalLengthCm double, PetalWidthCm double, Species VARCHAR(20));
 
-		mysql çıkış.
-		\q:
-	2.1. iris.csv dosyasını /root dizinine taşıma ve başlık satırını silme
-		[root@sandbox-hdp ~]# wget https://raw.githubusercontent.com/erkansirin78/hadoop-spark-for-developers/master/Datasets/iris.csv
-		
-	2.2. 
-	[root@sandbox-hdp ~]# vi iris.csv
-		ile dosyanın başlık satırını sil 
-		mysql'e tekrar bağlan  
+	mysql>
+LOAD DATA LOCAL INFILE '/root/iris.csv' INTO TABLE iris_mysql
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(SepalLengthCm,SepalWidthCm,PetalLengthCm,PetalWidthCm,Species);
 
-		mysql> use azhadoop;
+Yükleme kontrolü:
+mysql> select * from iris_mysql limit 5;
++---------------+--------------+---------------+--------------+-------------+
+| SepalLengthCm | SepalWidthCm | PetalLengthCm | PetalWidthCm | Species     |
++---------------+--------------+---------------+--------------+-------------+
+|           5.1 |          3.5 |           1.4 |          0.2 | Iris-setosa |
+|           4.9 |            3 |           1.4 |          0.2 | Iris-setosa |
+|           4.7 |          3.2 |           1.3 |          0.2 | Iris-setosa |
+|           4.6 |          3.1 |           1.5 |          0.2 | Iris-setosa |
+|             5 |          3.6 |           1.4 |          0.2 | Iris-setosa |
++---------------+--------------+---------------+--------------+-------------+
+5 rows in set (0.00 sec)
 
-		mysql>
-		LOAD DATA LOCAL INFILE '/root/iris.csv' INTO TABLE iris_mysql
-		FIELDS TERMINATED BY ',' 
-		ENCLOSED BY '"' 
-		LINES TERMINATED BY '\n'
-		(SepalLengthCm,SepalWidthCm,PetalLengthCm,PetalWidthCm,Species);
 
 mysql çıkış.
  \q:
@@ -72,43 +85,82 @@ mysql çıkış.
 
 Bu komutun sonunda ekrana sorgu sonucu gelmelidir.
 
-5. Ambari'den Atlas servisini silelim lib ler çakışıyor. 
-Çünkü denemelerde alınan hatalardan Atlas hook sürekli Sqoop'un çalışmasını engellediği görüldü.
+
+
+5. 
+java.lang.ClassNotFoundException: org.apache.atlas.sqoop.hook.SqoopHook
+ hatası alındığında Ambari'den Atlas servisini silelim çünkü lib ler çakışıyor. 
+Denemelerde alınan hatalardan Atlas hook sürekli Sqoop'un çalışmasını engellediği görüldü.
+
 
 6. sqoop import ile mysql'den hdfs'e veri aktarma 
+	
 	6.1. import edilecek dizini hdfs'te yaratalım:
 		[maria_dev@sandbox-hdp ~]$ hdfs dfs -mkdir /user/maria_dev/sqoop_import
 
-		Sqoop import'u çalştıralım:
+	6.2.	Sqoop import'u çalştıralım:
 
 [maria_dev@sandbox-hdp ~]$ sqoop import --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
 --driver com.mysql.jdbc.Driver \
 --username root --password hadoop \
 --table iris_mysql --m 1 --target-dir /user/maria_dev/sqoop_import/iris
 
+
+	6.3.
 Hedef dizinde kontrol yapalım:
 Ambari FilesView ile /user/maria_dev/sqoop_import/iris
 diznini kontrol edelim ve iris verisetini görelim.
-part-m-00000
 
-Yukarıda --m 1 parametresini mapping sayısı çin kullanıyoruz. Şayet tablomuzda artan sıralı bir anahtar olsaydı
+[root@sandbox-hdp ~]# hdfs dfs -cat  /user/maria_dev/sqoop_import/iris/part-m-00000
+5.1,3.5,1.4,0.2,Iris-setosa
+4.9,3.0,1.4,0.2,Iris-setosa
+4.7,3.2,1.3,0.2,Iris-setosa
+4.6,3.1,1.5,0.2,Iris-setosa
+.
+.
+.
+
+
+Yukarıda --m 1 parametresini mapping sayısı için kullanıyoruz. Şayet tablomuzda artan sıralı bir anahtar olsaydı
 bunu daha fazla parça ile yapabilirdik. Ancak olmadığı için mecbur --m 1 yapıyoruz.
 
 
 
-7. sqoop import ile mysql'den Hive'a veri aktarma ön ayarlar:
 
-mapreduce.job.ubertask.enable = true
-mapreduce.job.ubertask.maxmaps = 1
-mapreduce.job.ubertask.maxreduces = 1
-mapreduce.job.ubertask.maxbytes = 134217728
 
-mapreduce.job.ubertask.maxbytes değeri HDFS ayarlarından alındı dfs.block.size=134217728
 
+
+
+
+
+====================================================================================
+UYGULAMA-2  (mysql -> sqoop ->  Hive)
+====================================================================================
+
+7.
+
+Hive içinde 
+CREATE DATABASE IF NOT EXISTS azhadoop
+veri tabanı yaratalım.
 
 8. Aktarım:
-Tablo mevcut değilse:
-target dir silme  hdfs dfs -rm -R -skipTrash /tmp/hive_temp
+
+8.1. hdfs kullanıcısına geçme:
+
+su hdfs
+
+
+8.2. Varsa hedef dizin ve hive tablosunu silme
+				target dir silme:
+				hdfs dfs -rm -R -skipTrash /tmp/hive_temp
+				
+				hedef tablo silme:
+				DROP TABLE iris_mysql;
+
+8.3. Hive tablosu mevcut değilse:
+----------------------------------
+su - hdfs
+
 
 sqoop import --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
 --driver com.mysql.jdbc.Driver \
@@ -118,12 +170,276 @@ sqoop import --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
 --hive-table azhadoop.iris_hive --target-dir /tmp/hive_temp
 
 
-Tablo mevcut ve üzerine yazılacaksa:
-target dir silme  hdfs dfs -rm -R -skipTrash /tmp/hive_temp
+8.4.
+Hive kontrol:
+SELECT COUNT(*) FROM iris_hive
+150
+
+
+8.5. Hive tablosu mevcut ve üzerine yazılacaksa:
+-----------------------------------------------
+
+8.5.1. mysql'den iris_mysql tablosuna bir satır ekleyelim:
+
+	[hdfs@sandbox-hdp root]$ mysql -u root -p
+	mysql> use azhadoop
+	mysql> insert into iris_mysql values(6.5,3.0,5.2,2.0,"Iris-virginica");
+	\q;
+8.5.2. üzerine yazarak hive'a aktarma:
+---------------------------------------
+su - hdfs
+
+
+
 sqoop import --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
 --driver com.mysql.jdbc.Driver \
 --username root --password hadoop \
 --query "select * from iris_mysql WHERE \$CONDITIONS" \
 --m 1 --hive-import --hive-overwrite \
---hive-table azhadoop.iris_hive --target-dir /tmp/hive_temp
+--hive-table azhadoop.iris_hive --target-dir /tmp/hive_temp2
+
+
+hive tablosundan eklenen satırı kontrol edebilirsiniz.
+SELECT COUNT(*) FROM iris_hive
+151
+
+
+
+
+
+
+
+
+
+
+
+
+====================================================================================
+UYGULAMA-3  (postgresql -> sqoop ->  Hive)
+====================================================================================
+
+1. Docker machine çalıştırma (toolbox version)
+docker-machine start default 
+docker-machine env
+eval $("C:\Program Files\Docker Toolbox\docker-machine.exe" env)
+Not: Yukarıdaki komut sizin ekranınızda en alt satırda bulunur. Onu kopyalayıp yapıştırın.
+ip adresinizi almayı unutmayın
+benimki: 192.168.99.107
+
+2. (kurulu ise bu adımı atlayın)
+
+POSTGRESQL Docker Kurulumu 
+docker run -p 5432:5432 -d \
+-e POSTGRES_PASSWORD=postgres \
+-e POSTGRES_USER=postgres \
+-e POSTGRES_DB=spark \
+-v pgdata:/var/lib/postgresql/data \
+postgres
+
+
+
+3. posgresql container id öğrenme
+docker ps
+veya
+docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+<container_id>        postgres            "docker-entrypoint.s…"   14 seconds ago      Up 14 seconds       0.0.0.0:5432->5432/tcp   nervous_leavitt
+
+4. çalışmıyorsa posgresql container çalıştırma ve psql shell'e bağlanma
+docker container start <container_id>
+winpty docker.exe exec -it <container_id> psql -U postgres spark
+
+
+Beklenen sonuç:
+psql (11.2 (Debian 11.2-1.pgdg90+1))
+Type "help" for help.
+
+spark=#
+
+5. Advertising veri seti için tablo oluştur.
+mevcut veri tabanlarını listele:
+postgres-# \l
+
+spark veri tabanını seç 
+postgres=# \c spark
+
+spark veri tabanındaki mevcut tabloları listele
+spark=# \dt
+            List of relations
+ Schema |    Name     | Type  |  Owner
+--------+-------------+-------+----------
+ public | advertising | table | postgres
+ public | simple_data | table | postgres
+ public | tips        | table | postgres
+(3 rows)
+
+
+(Eğer mevcut ise bu adımı atlayınız)
+CREATE TABLE public.advertising (
+id int4 NULL,
+tv float8 NULL,
+radio float8 NULL,
+newspaper float8 NULL,
+sales float8 NULL
+);
+
+
+6. postgresql shell çıkış 
+\q
+
+
+7. Ana makineden postgres container içine csv dosyası kopyalama 
+Ana makineden posgresql e dosya kopyalama
+veri dosyasının olduğu dizinde:
+wget https://raw.githubusercontent.com/erkansirin78/datasets/master/Advertising.csv
+ 
+ardından:
+$ docker cp Advertising.csv <container_id>:/Advertising.csv
+
+8. yüklü değil ise:
+pip install psycopg2
+
+9. postgres kullanıcısı ile postgres shelle bağlanma:
+winpty docker.exe exec -it <container_id> psql -U postgres
+ 
+Veri tabanlarını listeleme:
+ postgres-# \l
+ spark veri tabanını seç 
+ postgres=# \c spark
+ 
+10. veriyi tabloya yazma: (eğer yüklü ise bu adımı atlayınız)
+COPY advertising FROM '/Advertising.csv' DELIMITERS ',' CSV HEADER;
+
+ sonuç: 
+COPY 200
+
+
+Sandbox'tayız.
+11. postgresql driver indir 
+[root@sandbox-hdp ~]# wget https://jdbc.postgresql.org/download/postgresql-42.2.6.jar
+
+
+12. driver jar'ı sqoop library'e taşı
+[root@sandbox-hdp ~]# cp postgresql-42.2.6.jar /usr/hdp/current/sqoop-client/lib/
+
+
+13. sqoop eval ile erişimi kontrol et
+[root@sandbox-hdp ~]# sqoop eval --connect jdbc:postgresql://192.168.99.107:5432/spark \
+--username postgres --password postgres --query "select * from advertising limit 5"
+
+Sonuç:
+Warning: /usr/hdp/2.6.4.0-91/accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+19/07/24 02:53:50 INFO sqoop.Sqoop: Running Sqoop version: 1.4.6.2.6.4.0-91
+19/07/24 02:53:50 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+19/07/24 02:53:50 INFO manager.SqlManager: Using default fetchSize of 1000
+-----------------------------------------------------------------------------------------------------------
+| id          | tv                   | radio                | newspaper            | sales                |
+-----------------------------------------------------------------------------------------------------------
+| 1           | 230.099999999999994  | 37.7999999999999972  | 69.2000000000000028  | 22.1000000000000014  |
+| 2           | 44.5                 | 39.2999999999999972  | 45.1000000000000014  | 10.4000000000000004  |
+| 3           | 17.1999999999999993  | 45.8999999999999986  | 69.2999999999999972  | 9.30000000000000071  |
+| 4           | 151.5                | 41.2999999999999972  | 58.5                 | 18.5                 |
+| 5           | 180.800000000000011  | 10.8000000000000007  | 58.3999999999999986  | 12.9000000000000004  |
+-----------------------------------------------------------------------------------------------------------
+
+
+
+13. Hive tablosu mevcut değilse:
+----------------------------------
+su - hdfs
+
+
+sqoop import --connect jdbc:postgresql://192.168.99.107:5432/spark \
+--driver org.postgresql.Driver \
+--username postgres --password postgres \
+--query "select * from advertising WHERE \$CONDITIONS" \
+--m 4 --split-by id --hive-import --create-hive-table \
+--hive-table azhadoop.advertising --target-dir /tmp/hive_temp
+
+
+Beklenen sonuç:
+Logging initialized using configuration in jar:file:/usr/hdp/2.6.4.0-91/hive/lib/hive-common-1.2.1000.2.6.4.0-91.jar!/hive-log4j.properties
+OK
+Time taken: 2.366 seconds
+Loading data to table azhadoop.advertising
+Table azhadoop.advertising stats: [numFiles=4, numRows=0, totalSize=4785, rawDataSize=0]
+OK
+Time taken: 0.988 seconds
+
+
+
+
+
+
+14. üzerine yazarak hive'a aktarma:
+------------------------------------
+	
+sqoop import --connect jdbc:postgresql://192.168.99.107:5432/spark \
+--driver org.postgresql.Driver \
+--username postgres --password postgres \
+--query "select * from advertising WHERE \$CONDITIONS" \
+--m 4 --split-by id --hive-import --hive-overwrite \
+--hive-table azhadoop.advertising --target-dir /tmp/hive_temp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+====================================================================================
+UYGULAMA-4  (HDFS -> sqoop ->  mysql)
+====================================================================================
+
+1. Mysql veri tabaına bağlan ve iris_mysql tablosunu truncate et
+mysql -u root -p
+use azhadoop
+truncate table iris_mysql;
+select count(*) from iris_mysql;
++----------+
+| count(*) |
++----------+
+|        0 |
++----------+
+1 row in set (0.00 sec)
+
+
+2. sqoop export
+
+sqoop export --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
+--driver com.mysql.jdbc.Driver \
+--username root --password hadoop \
+--export-dir /user/maria_dev/sqoop_import/iris/part-m-00000 \
+--m 1 --table iris_mysql
+
+
+
+sqoop export --connect jdbc:mysql://sandbox-hdp.hortonworks.com/azhadoop \
+--driver com.mysql.jdbc.Driver \
+--username root --password hadoop \
+--export-dir /user/maria_dev/sqoop_import/iris \
+--m 1 --table iris_mysql
+
+3. mysql kontrol
+
+mysql -u root -p
+use azhadoop
+select count(*) from iris_mysql;
++----------+
+| count(*) |
++----------+
+|      150 |
++----------+
+1 row in set (0.00 sec)
+
 

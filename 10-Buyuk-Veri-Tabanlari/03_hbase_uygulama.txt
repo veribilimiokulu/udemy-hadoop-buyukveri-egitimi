@@ -1,0 +1,117 @@
+
+===============================================================================
+HBASE UYGULAMA-1: hbase shell ile tablo yaratma, okuma, güncelleme ve silme
+===============================================================================
+
+1.
+Ambari üzerinden HBase'i çalıştır
+
+
+2. 
+ssh root ile sandbox'a bağlan
+
+
+3. hbase kullanıcısına geç ve shell'e bağlan
+[root@sandbox-hdp ~]# su - hbase
+[hbase@sandbox-hdp ~]$ hbase shell
+
+
+Beklenen sonuç:
+hbase(main):001:0>
+
+4.
+hbase(main):001:0> status
+
+Çıktı:
+1 active master, 0 backup masters, 1 servers, 0 dead, 7.0000 average load
+
+5. Tablo oluşturma
+Tablo adı: muster
+column families: per, adr
+
+hbase(main):002:0> create 'muster','per','adr'
+0 row(s) in 1.2840 seconds
+
+6. Tabloları listeleme:
+hbase(main):003:0> list
+
+		TABLE
+		ATLAS_ENTITY_AUDIT_EVENTS
+		atlas_titan
+		iemployee
+		muster
+		4 row(s) in 0.0330 seconds
+
+		=> ["ATLAS_ENTITY_AUDIT_EVENTS", "atlas_titan", "iemployee", "muster"]
+		
+		
+		
+7. 	Tabloya yazma:
+format
+put 'tablo_adi', 'rowkey', 'column_family:column', 'deger'
+		
+hbase(main):006:0> put 'muster', '10045678957','per:yas','29'
+0 row(s) in 0.0730 seconds
+		
+		
+8. Tablo içeriğini görme
+hbase(main):007:0> scan 'muster'
+ROW                                    COLUMN+CELL
+ 10045678957                           column=per:yas, timestamp=1564027375657, value=29
+1 row(s) in 0.0340 seconds
+
+
+9. Tabloya müşterinin adını da ekleyelim
+hbase(main):006:0> put 'muster', '10045678957','per:ad','Elif'
+	
+Eklediğimizi görelim:	
+hbase(main):009:0> scan 'muster'
+ROW                                    COLUMN+CELL
+ 10045678957                           column=per:ad, timestamp=1564027559639, value=Elif
+ 10045678957                           column=per:yas, timestamp=1564027375657, value=29
+1 row(s) in 0.0250 seconds
+		
+10. Tabloyu silmek:
+		
+hbase(main):010:0> disable 'muster'
+0 row(s) in 2.6890 seconds
+
+hbase(main):011:0> drop 'muster'
+0 row(s) in 1.2610 seconds
+
+hbase(main):012:0> list
+TABLE
+ATLAS_ENTITY_AUDIT_EVENTS
+atlas_titan
+iemployee
+3 row(s) in 0.0090 seconds
+
+=> ["ATLAS_ENTITY_AUDIT_EVENTS", "atlas_titan", "iemployee"]
+		
+		
+		
+11. shell çıkış
+		
+hbase(main):013:0> exit
+		
+		
+
+
+
+
+
+
+hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.seperator=, -Dimporttsv.columns="HBASE_ROW_KEY,personel:isim,personel:yas,meslek:meslek,meslek:sehir,meslek:sehir,meslek:gelir" simple_data /user/maria_dev/simple_data.csv 
+
+
+
+
+
+
+
+		
+		
+
+
+
+

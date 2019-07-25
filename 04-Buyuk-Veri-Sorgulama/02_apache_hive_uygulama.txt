@@ -1,4 +1,4 @@
-﻿1. Ambari Hive2 View üzerinden Uplad Table ile adult veri seti Hive'a tablo olarak yüklenir ve örnek sorgular çalıştırılır.
+﻿1. Ambari Hive2 View üzerinden Upload Table ile adult veri seti Hive'a tablo olarak yüklenir ve örnek sorgular çalıştırılır.
 
 
 2. Sorgular esnasında YARN Resource Manager arayüzündeki değişiklikler gözlemlenir.
@@ -18,7 +18,7 @@
 	Impala Hive'ın Cloudera'daki karşılığı
 	Impala'nın bir avantajı BI tarzındaki sorguları
 	Ayrıca Impala sorgu performansı olarak da daha hızlı
-	Ancak Impala Cloudera ile sınırlı bir araç Hive daha geniş ve açık bir proje
+	Ancak Impala Cloudera ile sınırlı bir araç, Hive daha geniş ve açık bir proje
 	
 6. Beeline ile Hive komut satırına bağlanma:
 [root@sandbox-hdp ~]# beeline -u jdbc:hive2://localhost:10000

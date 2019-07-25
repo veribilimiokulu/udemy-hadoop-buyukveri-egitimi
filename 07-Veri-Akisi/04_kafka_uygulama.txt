@@ -9,7 +9,7 @@
 	4.1. [root@sandbox-hdp ~]# cd /usr/hdp/current/kafka-broker/bin/
 			diznine geçin.
 			
-	4.2. ./kafka-topic.sh --create --zookeeper sandbox-hdp.hortonworks.com:2181 --replication-factor 1 --partitions 1 --topic deneme
+	4.2. ./kafka-topics.sh --create --zookeeper sandbox-hdp.hortonworks.com:2181 --replication-factor 1 --partitions 1 --topic deneme
 		komutu ile deneme adında bir topic oluşturuyoruz.
 		
 		./kafka-topics.sh --list --zookeeper sandbox-hdp.hortonworks.com:2181
@@ -37,3 +37,8 @@
 		komutu ile az önce producer ile deneme topiğine yazdığımız mesajarı okuyacağız.
 		
 	
+	
+	
+	
+6. Consumer'a dosyadan doğrudan mesaj eklemek
+[root@sandbox-hdp bin]# ./kafka-console-producer.sh --broker-list sandbox-hdp.hortonworks.com:6667 --topic deneme < /home/maria_dev/simple_data.csv

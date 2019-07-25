@@ -1,0 +1,39 @@
+Ranger Hive erişim kısıtlamaları
+====================================
+
+1. Ambar -> Ranger > Ranger UI
+admin
+admin
+
+
+2. Hive view veya DBeaver select * from default.adult;
+sonucu görelim
+sonuç gelmelidir.
+
+
+3. Access manager -> Hive 
+Hive Global Tables 
+disable yap
+kaydet
+
+Belli bir süre geçtikten sonra
+
+4. Hive view  
+
+select * from default.adult limit 20;
+
+sonucu görelim
+hata vermelidir.
+org.apache.hive.service.cli.HiveSQLException: Error while compiling statement: FAILED: HiveAccessControlException Permission denied: user [admin] does not have [SELECT] privilege on [default/adult/*]
+
+5. Ranger üzerinden yeni politika belirle
+
+default.adult tablosunun workclass, education sütunlarına tam yetki ile sadece hadoop grubu ve hive, admin ve maria_dev ulaşsın
+
+6. 
+select workclass, education, age from adult limit 20;
+hata vermelidir
+
+select workclass, education from adult limit 20;
+çalışmalıdır.
+
