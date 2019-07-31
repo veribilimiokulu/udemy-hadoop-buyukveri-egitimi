@@ -6,17 +6,16 @@
     </artifacts-to-build>
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/main/scala/p1/SparkDeneme.scala" line="7" mnemonic="2" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/scala/p1/SparkDeneme.scala" line="4" mnemonic="2" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="976b8f1f-24c5-4695-b84a-c724f0045985" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../03-Hadoop-Temel-Bilesenler/06_map_reduce_uygulama.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../03-Hadoop-Temel-Bilesenler/06_map_reduce_uygulama.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../03-Hadoop-Temel-Bilesenler/mapreducewordcount/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../03-Hadoop-Temel-Bilesenler/mapreducewordcount/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/01_apache_hive_teori.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/01_apache_hive_teori.pptx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/04_apache_tez_teori.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/04_apache_tez_teori.pptx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/05_presto.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/05_presto.pptx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/07_apache_drill.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../../04-Buyuk-Veri-Sorgulama/07_apache_drill.pptx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../02_hbase.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/../02_hbase.pptx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/core-site.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hdfs-site.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapred-site.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/yarn-site.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/p1/SparkDeneme.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/p1/SparkDeneme.scala" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -34,19 +33,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/p1/SparkDeneme.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39">
-              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="136">
+              <caret line="8" column="46" lean-forward="true" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
               <folding>
                 <element signature="e#12#54#0" expanded="true" />
               </folding>
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/core-site.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1675" />
           </provider>
         </entry>
       </file>
@@ -89,11 +81,10 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="-7" />
-    <option name="y" value="2" />
-    <option name="width" value="1378" />
-    <option name="height" value="733" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="159" />
+    <option name="width" value="1768" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -101,8 +92,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -142,6 +133,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../ignored_files" />
     <property name="project.structure.last.edited" value="Artifacts" />
@@ -203,10 +195,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="2" width="1378" height="733" extended-state="1" />
-    <editor active="true" />
+    <frame x="159" y="0" width="1768" height="1047" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15098634" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11065574" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -215,7 +206,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.7088388" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.45679012" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -281,15 +272,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/core-site.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1675" />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/core-site.xml" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/p1/SparkDeneme.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="136">
+          <caret line="8" column="46" lean-forward="true" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
           <folding>
             <element signature="e#12#54#0" expanded="true" />
           </folding>
