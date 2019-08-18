@@ -1,0 +1,53 @@
+Ön gereksinim: java yüklü olmalıdır.
+Komut satırında "java --version" yazıldığında aşağıdakine benzer bir çıktı görülmelidir.
+
+java version "1.8.0_201"
+Java(TM) SE Runtime Environment (build 1.8.0_201-b09)
+Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)
+
+
+
+1.
+"download maven" Google
+
+2. 
+apache maven sitesi sonucunda Download Apache maven
+
+3. 
+Binary zip archive indir 
+
+4. 
+İndirilen zipli dosyayı 7-zip (veya eşlenik) ile aç.
+
+5. 
+Açılan dosyayı kes ve C:/ diznine yapıştır
+
+6.
+Klasör ismini maven olarak değiştir.
+
+7.
+Ortam değişkenleri (environment variables) 
+MAVEN_HOME
+değişkeni yaratılır ve 
+C:/maven
+eklenir.
+
+8.
+Aynı yerde Path seçilir ve Düzenle denir
+
+en alta 
+%MAVEN_HOME%\bin
+eklenir.
+
+9.
+Ortam değişkenlerinden çıkılır.
+
+10. yeni bir komut satırı açılır
+mvn --version
+komutu çalıştırıldığında aşağıdakine benzer bir çıktı görülür.
+
+Apache Maven 3.6.1 (d66c9c0b3152b2e69ee9bac180bb8fcc8e6af555; 2019-04-04T22:00:29+03:00)
+Maven home: C:\maven\bin\..
+Java version: 1.8.0_201, vendor: Oracle Corporation, runtime: C:\Program Files\Java\jdk1.8.0_201\jre
+Default locale: en_US, platform encoding: Cp1254
+OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"

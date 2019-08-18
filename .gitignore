@@ -10,3 +10,4 @@ buildNumber.properties
 ignored_files
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
+08-Buyuk-Veri-Yonetimi-Guvenlik-ve-Kod-Gelistirme/intellijmaven/out
