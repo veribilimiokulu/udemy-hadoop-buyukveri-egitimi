@@ -63,5 +63,30 @@ select workclass, COUNT(*) FROM `default`.adult_preprocessed GROUP by workclass;
 
 
 
+11.
+
+Mysq veri tabanına bağlama:
+=====================================================
+HDP 2.6.5 Kullananlar:
+root kullanıcısı ile:
+---------------------
+
+systemctl stop mysqld
+systemctl set-environment MYSQLD_OPTS="--skip-grant-tables --skip-networking"
+systemctl start mysqld
+mysql -u root
+
+mysql shell içinde sırasıyla
+-------------------------------
+
+use mysql;
+update user set authentication_string=PASSWORD("hadoop") where User='root';
+flush privileges;
+quit
+
+
+HDP 2.6.4 kullananlar doğrudan
+mysql -u root -p 
+hadoop
 
 
