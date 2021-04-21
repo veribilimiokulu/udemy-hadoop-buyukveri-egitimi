@@ -1,30 +1,4 @@
-﻿/////////////////  NIFI KURULUMU ///////////////////////////////////////////
-1. nifi repo dosyasını /etc/yum.repos.d/ diznine indir.
-
-	cd /etc/yum.repos.d/
-	wget	http://public-repo-1.hortonworks.com/HDF/centos6/3.x/updates/3.1.2.0/hdf.repo
-	
-2. yum info nifi* komutuyla paket kontrolü yap.
-
-3. yum -y install  nifi_3_1_2_0_7 komutu ile kurulumu başlat.
-
-4. vi /usr/hdf/current/nifi/conf/nifi.properties ile dosya içine gir.
-	
-	#web properties# bölümünde
-	nifi.web.http.port= değerini 8080'den 8090'a çek.
-
-	Açılması biraz zaman alır. 
-	
-	Çalışırlık kontrolü:
-	 /usr/hdf/current/nifi/bin/nifi.sh status
-	
-5. kurulum sonrası nifi çalıştırma
-	/usr/hdf/current/nifi/bin/nifi.sh start
-	 
-6. Browser’a http://sandbox.hortonworks.com:8090/nifi/ adresini gir ve NiFi arayüzünü gör. 
-
-
-///////////////////// NiFi Mysql’den Kafka’ya incremental veri akışı ////////////////////////
+﻿///////////////////// NiFi Mysql’den Kafka’ya incremental veri akışı ////////////////////////
 
  Mysql veri tabanında hazırlık yap.
  
