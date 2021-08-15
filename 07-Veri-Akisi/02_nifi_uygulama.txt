@@ -4,7 +4,7 @@
  
 1. Kullanılacak iris veri setini indir 
 	cd /home/maria_dev
-	wget http://veribilimi.co/data/iris_with_pk.csv 
+	wget https://raw.githubusercontent.com/erkansirin78/datasets/master/iris_with_pk.csv 
 	ile  /home/maria_dev diznine veri ardışık artan Id sütununa sahip iris veri setini indir.
 
 2. Mysql’e bağlan, azhadoop veri tabanını seç
